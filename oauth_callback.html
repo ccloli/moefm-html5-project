@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -13,8 +13,10 @@ if(window.location.href.indexOf('verifier')>=0){
 	}
 	else{
 		prompt('请复制下面的验证码并贴入播放页指定文本框以完成验证',verifier);
+		window.self.opener=null;
 		window.close();
 	}
+	document.write('请复制下面的验证码并贴入播放页指定文本框以完成验证 <input type="text" value="'+verifier+'"><br>若您看到这段文字，则表明该页面未正常关闭，请手动将本页面关闭');
 }
 </script>
 </head>
