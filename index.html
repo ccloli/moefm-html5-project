@@ -1,12 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <!--
-	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2014.10.13_   
+	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2014.10.18_   
 	   |  \/  |          |  ____|  \/  |  | |  | |__   __|  \/  | |   |  ___|  |  _ \            |_|           | |
 	   | \  / | ___   ___| |__  | \  / |  | |__| |  | |  | \  / | |   | |__    | |_) | __  ___    _  ___  ___ _| |__
 	   | |\/| |/ _ \ / _ \  __| | |\/| |  |  __  |  | |  | |\/| | |   |___ \   | ___/ V _\/ _ \  | |/ _ \/ __|_   _/
 	   | |  | | (_) |  __/ |    | |  | |  | |  | |  | |  | |  | | |___ ___) |  | |  |  / | (_) | | |  __/ |__  | |
 	   |_|  |_|\___/ \___|_|    |_|  |_|  |_|  |_|  |_|  |_|  |_|_____|____/   |_|  |_|   \___/__| |\___/\___| | |__
-	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/  V 1.1.2  \___/
+	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/  V 1.1.6  \___/
 -->
 <html>
 <head>
@@ -36,7 +36,7 @@ body{background:rgba(255,255,255,0.5);user-select:none;-webkit-user-select:none;
 ::selection{background:rgba(0,0,0,0.5)}
 ::-moz-selection{background:rgba(0,0,0,0.5)}
 main{width:600px;height:600px;position:absolute;left:0;right:0;top:0;bottom:0;font-size:16px;margin:auto;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;text-shadow:0 0 1px rgba(50,50,50,0.75)}
-.cover{width:400px;height:400px;background-color:rgba(50,50,50,.75);margin:10px auto;border:solid 2px #fff;box-shadow:0 0 5px #000;-webkit-transition:0.25s width linear,0.25s height linear;-o-transition:0.25s width linear,0.25s height linear;transition:0.25s width linear,0.25s height linear;margin:20px auto 10px}
+.cover{width:400px;height:400px;background-color:rgba(50,50,50,.75);margin:10px auto;border:solid 2px #fff;box-shadow:0 0 5px #000;-webkit-transition:0.25s width linear,0.25s height linear;-o-transition:0.25s width linear,0.25s height linear;transition:0.25s width linear,0.25s height linear;margin:20px auto 10px;position:relative;overflow:hidden}
 .cover_preload,.background_preload{position:absolute}
 .info ul{list-style:none;padding:0;margin:0;text-align:center}
 .info ul li{padding:5px 0;user-select:text;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;line-height:1em;overflow:hidden;height:1em;white-space:nowrap;text-overflow:ellipsis;transition:0.25s all linear}
@@ -48,7 +48,7 @@ main{width:600px;height:600px;position:absolute;left:0;right:0;top:0;bottom:0;fo
 .control>span.c_volume:hover{width:3.5em}
 .control>span.c_volume:hover .c_volume_range{width:100px;opacity:1}
 .control>span.c_volume_icon{display:inline-block;width:1.1em}
-.control2{text-align:center;font-family:moefm-html5-icomoon;position:absolute;z-index:1;cursor:pointer}
+.control2{text-align:center;font-family:moefm-html5-icomoon;position:absolute;z-index:1;cursor:pointer;left:0;top:0;}
 .control2>span{opacity:0;font-size:200px;padding:100px;background:rgba(0,0,0,0.5);position:absolute;transition:0.25s all linear;text-shadow:0 0 5px #FFF}
 .control2:hover>span{opacity:1}
 .control2>span.c_play{opacity:1}
@@ -64,8 +64,8 @@ main{width:600px;height:600px;position:absolute;left:0;right:0;top:0;bottom:0;fo
 .c_volume_range[disabled]{opacity:0.75;pointer-events:none}
 .timeline{position:fixed;top:0;left:0;width:100%;height:20px;font-size:12px;line-height:20px;background:rgba(0,0,0,0.5);color:#fff;z-index:100;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;box-shadow:0 0 2px rgba(0,0,0,0.5)}
 .timeline_current_time,.timeline_duration_time{z-index:105;position:fixed;pointer-events:none;transition:0.25s all linear}
-.timeline_current_time{left:5px}
-.timeline_duration_time{right:5px}
+.timeline_current_time{left:10px}
+.timeline_duration_time{right:10px}
 .timeline_current,.timeline_duration{left:0px;height:20px;position:fixed;top:0;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;pointer-events:none}
 .timeline_duration{background:rgba(255,255,255,0.5);z-index:101}
 .timeline_current{background:rgba(0,0,0,0.5);z-index:102}
@@ -75,9 +75,9 @@ footer a:hover,footer span:hover{background-color:rgba(255,255,255,0.5);color:#F
 .link_left{position:fixed;height:20px;line-height:20px;padding-left:10px;left:0;bottom:0;transition:0.25s all linear}
 .link_right{position:fixed;height:20px;line-height:20px;padding-right:10px;right:0;bottom:0;transition:0.25s all linear}
 .link_right_user{display:inline}
-.link_right_user_btn>div{height:0px;overflow:hidden;opacity:0;bottom:0px;-webkit-transition:0.25s all ease-in;-o-transition:0.25s all ease-in;transition:0.25s all ease-in;right:10px;background:rgba(0,0,0,0.5);position:fixed}
+.link_right_user_btn>div{height:0px;overflow:hidden;opacity:0;bottom:0px;-webkit-transition:0.25s all ease-in;-o-transition:0.25s all ease-in;transition:0.25s all ease-in;right:10px;background:rgba(0,0,0,0.5);position:fixed;cursor:auto}
 .link_right_user_btn:hover>div{height:auto;overflow:hidden;opacity:1;bottom:20px;-webkit-transition:0.25s all ease-out;-o-transition:0.25s all ease-out;transition:0.25s all ease-out}
-.link_right_user_btn>div a{display:block;height:16.66667px;line-height:16.66667px}
+.link_right_user_btn>div a{display:block;height:16px;line-height:16px}
 aside{width:200px;font-size:12px;position:fixed;height:100px;right:-180px;top:50%;margin-top:-50px;/*top:0;bottom:0;left:auto;margin:auto;*/background-color:rgba(0,0,0,0.5);-webkit-transition:0.25s all ease-in;-o-transition:0.25s all ease-in;transition:0.25s all ease-in;box-shadow:0 0 2px rgba(0,0,0,0.5);z-index:100}
 aside:hover{right:0;-webkit-transition:0.25s all ease-out;-o-transition:0.25s all ease-out;transition:0.25s all ease-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 aside ul{margin:0;padding:0;opacity:0;;-webkit-transition:0.25s all ease-in;-o-transition:0.25s all ease-in;transition:0.25s all ease-in;pointer-events:none}
@@ -174,8 +174,8 @@ a{color:#000}
 
 <body>
 <main>
-	<audio autoplay="true" class="audio"></audio>
-	<div class="cover"><div class="control2"><span class="c_play" title="播放" hidden="hidden">播</span><span class="c_pause" title="暂停">停</span></div><img class="cover_preload" width="0" height="0"><div class="cover_loading_notification"></div></div>
+	<audio class="audio" autoplay="autoplay"></audio>
+	<div class="cover"><div class="control2"><span class="c_play" title="播放">播</span><span class="c_pause" title="暂停" hidden="hidden">停</span></div><img class="cover_preload" width="0" height="0"><div class="cover_loading_notification"></div></div>
 	<div class="info">
 		<ul>
 			<li class="title">Title</li>
@@ -263,6 +263,7 @@ var setting=JSON.parse(localStorage.getItem('moefm-html5-setting'))||{},
 	background_count_time_value=0,
 	loop=0,
 	is_login=false,
+	is_ended=false,
 	// Thanks to QB
 	generateOauthUrl = function (url, options) {
 		var accessor = {
@@ -307,6 +308,8 @@ function audio_play(c){
 	if(count<playlist.length-1){
 		count+=c;
 		audio.src=playlist[count].url;
+		audio.load();
+		audio.play();
 		update_info();
 		if(count>playlist.length-5&&loop==0)update_playlist(null,false);
 		//if(_check_music==true)check_file_exist(playlist[count+1].url);
@@ -319,6 +322,7 @@ function audio_play(c){
 	}
 	else update_playlist(null,false);
 }
+
 function update_info(){
 	cover_retry=0;
 	if(cover_preload.src!=playlist[count].cover.large){
@@ -716,7 +720,7 @@ function check_login(){
 				user_btn.className='link_right_user_btn';
 				link_right_user.appendChild(user_btn);
 				var user_pan=document.createElement('div');
-				user_pan.innerHTML='<div style="padding:6px"><div style="float:left"><img class="avatar" style="width:48px;height:48px" src="'+data.user_avatar.small+'" alt=""></div><div style="padding-left:6px;margin-left:48px;width:108px"><a title="个人主页" href="'+data.user_fm_url+'">我的主页</a><a target="_blank" class="external" href="http://moefou.org/user/setting">个人设定</a><a onclick="logout()">登出</a><div style="clear:both"></div></div><div style="clear:both"></div></div>';
+				user_pan.innerHTML='<div style="padding:6px"><div style="float:left;width:48px;height:48px"><img class="avatar" style="width:48px;height:48px" src="'+data.user_avatar.small+'" alt=""></div><div style="padding-left:6px;margin-left:48px;width:108px"><a title="个人主页" href="'+data.user_fm_url+'" target="_blank">我的主页</a><a target="_blank" class="external" href="http://moefou.org/user/setting">个人设定</a><a onclick="logout()">登出</a><div style="clear:both"></div></div><div style="clear:both"></div></div>';
 				/*user_pan.setAttribute('hidden','hidden');*/
 				user_btn.appendChild(user_pan);
 				/*user_btn.addEventListener('mouseover',function(){
@@ -819,7 +823,7 @@ function login(){
 				tokenSecret:rs
 			},
 			re_url=generateOauthUrl(url, options);
-		div.innerHTML='请在新弹出的页面中完成授权，完成授权后请复制萌否开放平台提供的验证码，并粘贴于下面的文本框中。<br>如果浏览器未弹出授权页面，请手动<a href="'+re_url+'" target="_blank">点击此处</a>打开授权页面。<br>请于 1 小时内完成授权。<br><input type="text" placeholder="请在此输入验证码" class="login_verifier"></input><br><button class="login_confirm_last">确定</button>';
+		div.innerHTML='请在新弹出的页面中完成授权，完成授权后请复制萌否开放平台提供的验证码，并粘贴于下面的文本框中。<br>如果浏览器未弹出授权页面，请手动<a href="'+re_url+'" target="_blank">点击此处</a>打开授权页面。<br>请于 1 小时内完成授权。<br><input type="text" placeholder="请在此输入验证码" class="login_verifier"><br><button class="login_confirm_last">确定</button>';
 		div.getElementsByClassName('login_confirm_last')[0].addEventListener('click',function(){
 			var url='http://api.moefou.org/oauth/access_token',
 				options={
@@ -901,13 +905,16 @@ function start(){
 }
 
 audio.addEventListener('play',function(){
+	is_ended=false;
 	c_play.setAttribute('hidden','hidden');
 	c_pause.removeAttribute('hidden');
 	update_info();
 })
 audio.addEventListener('pause',function(){
-	c_pause.setAttribute('hidden','hidden');
-	c_play.removeAttribute('hidden');
+	if(is_ended!=true){
+		c_pause.setAttribute('hidden','hidden');
+		c_play.removeAttribute('hidden');
+	}
 })
 audio.addEventListener('timeupdate',function(){
 	if(!isNaN(audio.duration)){
@@ -955,6 +962,7 @@ audio.addEventListener('error',function(){
 	audio_play();
 })
 audio.addEventListener('ended',function(){
+	is_ended=true;
 	if(next==0)update_log();
 	else next=0;
 	audio_play();
