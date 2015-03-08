@@ -999,11 +999,13 @@ audio.addEventListener('progress', function(){
 	if(buffered.length>0 && !isNaN(duration))timeline_duration.style.width=(buffered.end(buffered.length-1).toFixed(2))/(duration.toFixed(2))*100+'%';
 });
 audio.addEventListener('timeupdate',function(){
-	if(!isNaN(audio.duration)){
-		timeline_current.style.width=(audio.currentTime/audio.duration)*100+'%';
+	var duration = audio.duration;
+	var currentTime = audio.currentTime;
+	if(!isNaN(duration)){
+		timeline_current.style.width=(currentTime/duration)*100+'%';
 		if(buffered.length>0)timeline_duration.style.width=(buffered.end(buffered.length-1).toFixed(2))/(duration.toFixed(2))*100+'%';
-		timeline_current_time.innerHTML=parseInt(audio.currentTime/60)+':'+(parseInt(audio.currentTime)%60<10?'0'+parseInt(audio.currentTime)%60:parseInt(audio.currentTime)%60);
-		timeline_duration_time.innerHTML=parseInt(audio.duration/60)+':'+(parseInt(audio.duration)%60<10?'0'+parseInt(audio.duration)%60:parseInt(audio.duration)%60);
+		timeline_current_time.innerHTML=parseInt(currentTime/60)+':'+(parseInt(currentTime)%60<10?'0'+parseInt(currentTime)%60:parseInt(currentTime)%60);
+		timeline_duration_time.innerHTML=parseInt(duration/60)+':'+(parseInt(duration)%60<10?'0'+parseInt(duration)%60:parseInt(duration)%60);
 	}
 });
 audio.addEventListener('error',function(){
