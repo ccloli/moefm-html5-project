@@ -4,7 +4,7 @@
 //      ~ MoeFM High-Quality Audio Checker ~
 //             (c) 2014 864907600cc
 //                License: GPLv3
-//                     V1.0
+//                     V1.1
 
 // -- 如何使用？
 //    请使用 GET 方式将萌否电台的音频文件位址（无论音质，可不含 http 前缀）传入 url 参数中。
@@ -86,37 +86,12 @@ if(!empty($_GET['url'])&&preg_match('/(?:http:\/\/)?(nyan\.(?:90g|moefou)\.org\/
 	if(strstr(get_head($url_128), 'HTTP/1.1 200 OK'))$exist_128 = 1;
 	if(strstr(get_head($url_192), 'HTTP/1.1 200 OK'))$exist_192 = 1;
 	if(strstr(get_head($url_320), 'HTTP/1.1 200 OK'))$exist_320 = 1;
-	echo '
-{
-	"request": "'.$_GET['url'].'",
-	"response": {
-		"64":{
-			"exist": '.$exist_64.',
-			"url": "'.$url_64.'"
-		},
-		"128":{
-			"exist": '.$exist_128.',
-			"url": "'.$url_128.'"
-		},
-		"192":{
-			"exist": '.$exist_192.',
-			"url": "'.$url_192.'"
-		},
-		"320":{
-			"exist": '.$exist_320.',
-			"url": "'.$url_320.'"
-		}
-	},
-	"error": 0
-}';
+	$data = array('request' => $_GET['url'], 'response' => array('64' => array('exist' => $exist_64, 'url' => $url_64), '128' => array('exist' => $exist_128, 'url' => $url_128), '192' => array('exist' => $exist_192, 'url' => $url_192), '320' => array('exist' => $exist_320, 'url' => $url_320)), 'error' => 0, 'error_msg' => '\u83b7\u53d6\u6210\u529f');
+	echo json_encode($data);
 }
 else{
-	echo '
-{
-	"request": "'.$_GET['url'].'",
-	"error": 1,
-	"error_msg": "URL\u0020\u4e0d\u5339\u914d"
-}';
+	$data = array('request' => $_GET['url'], 'error' => 0, 'error_msg' => 'URL\u0020\u4e0d\u5339\u914d');
+	echo json_encode($data);
 }
 
 ?>

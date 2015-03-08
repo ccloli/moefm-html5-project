@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <!--
-	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2014.10.18_   
+	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2015.03.08_   
 	   |  \/  |          |  ____|  \/  |  | |  | |__   __|  \/  | |   |  ___|  |  _ \            |_|           | |
 	   | \  / | ___   ___| |__  | \  / |  | |__| |  | |  | \  / | |   | |__    | |_) | __  ___    _  ___  ___ _| |__
 	   | |\/| |/ _ \ / _ \  __| | |\/| |  |  __  |  | |  | |\/| | |   |___ \   | ___/ V _\/ _ \  | |/ _ \/ __|_   _/
 	   | |  | | (_) |  __/ |    | |  | |  | |  | |  | |  | |  | | |___ ___) |  | |  |  / | (_) | | |  __/ |__  | |
 	   |_|  |_|\___/ \___|_|    |_|  |_|  |_|  |_|  |_|  |_|  |_|_____|____/   |_|  |_|   \___/__| |\___/\___| | |__
-	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/  V 1.1.6  \___/
+	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/  V 1.1.9  \___/
 -->
 <html>
 <head>
 <meta charset="utf-8">
 <title>MoeFM HTML5 Project (Beta)</title>
-<link id="favicon" href="http://moefou.org/public/images/fm/favicon.ico" rel="icon" type="image/x-icon">
+<meta name="description" content="MoeFM HTML5 Project // 萌否电台 HTML5 版本（非官方） // Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli)">
+<link id="favicon" href="http://moefou.org/public/images/fm/favicon.ico" rel="icon " type="image/x-icon">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script src="sha1.js"></script>
-<script src="oauth.js"></script>
 <!--[if lt IE 10]>
 <script>
 alert('很抱歉，看起来您的浏览器版本过老了……\n请使用 IE 10 及以上版本，建议使用 IE 11');
@@ -26,16 +25,20 @@ window.location.href='http://moe.fm/listen'+window.location.search;
 <style>
 @font-face{
 	font-family:moefm-html5-icomoon;
-	src:url(moefm-html5-icomoon.ttf?_=20140611)
+	src:url(moefm-html5-icomoon.ttf?_=20141106)
 }
 article,aside,dialog,footer,header,div,footer,nav,figure,menu,main{display:block}
+[hidden="hidden"]{display:none!important}
 html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;background-color:transparent;zoom:1}
 html,.cover{background-size:cover;background-position:center center;background-repeat:no-repeat no-repeat}
 html{background-attachment:fixed;transition:background 0.5s linear}
 body{background:rgba(255,255,255,0.5);user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;font-family:"Hiragino Sans GB","Microsoft Yahei","WenQuanYi Micro Hei",Arial,Tahoma,sans-serif}
-::selection{background:rgba(0,0,0,0.5)}
+::-webkit-selection{background:rgba(0,0,0,0.5)}
+:-moz-selection{background:rgba(0,0,0,0.5)}
 ::-moz-selection{background:rgba(0,0,0,0.5)}
-main{width:600px;height:600px;position:absolute;left:0;right:0;top:0;bottom:0;font-size:16px;margin:auto;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;text-shadow:0 0 1px rgba(50,50,50,0.75)}
+::-ms-selection{background:rgba(0,0,0,0.5)}
+::selection{background:rgba(0,0,0,0.5)}
+main{width:600px;height:600px;position:absolute;left:0;right:0;top:0;bottom:0;font-size:16px;margin:auto;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;text-shadow:0 0 1px rgba(50,50,50,0.75);display: block}
 .cover{width:400px;height:400px;background-color:rgba(50,50,50,.75);margin:10px auto;border:solid 2px #fff;box-shadow:0 0 5px #000;-webkit-transition:0.25s width linear,0.25s height linear;-o-transition:0.25s width linear,0.25s height linear;transition:0.25s width linear,0.25s height linear;margin:20px auto 10px;position:relative;overflow:hidden}
 .cover_preload,.background_preload{position:absolute}
 .info ul{list-style:none;padding:0;margin:0;text-align:center}
@@ -61,22 +64,24 @@ main{width:600px;height:600px;position:absolute;left:0;right:0;top:0;bottom:0;fo
 .c_volume_range::-ms-track{background:#000;height:20px;box-shadow:0 0 1px #000}
 .c_volume_range::-ms-thumb{background:#FFF;border-radius:0;width:10px;height:20px}
 .c_volume_range::-ms-fill-lower{background:#000}
-.c_volume_range[disabled]{opacity:0.75;pointer-events:none}
-.timeline{position:fixed;top:0;left:0;width:100%;height:20px;font-size:12px;line-height:20px;background:rgba(0,0,0,0.5);color:#fff;z-index:100;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;box-shadow:0 0 2px rgba(0,0,0,0.5)}
+.c_volume:hover .c_volume_range[disabled]{opacity:0.75;pointer-events:none}
+.timeline{position:fixed;top:0;left:0;width:100%;height:24px;font-size:12px;line-height:24px;background:rgba(0,0,0,0.5);color:#fff;z-index:100;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;box-shadow:0 0 2px rgba(0,0,0,0.5)}
 .timeline_current_time,.timeline_duration_time{z-index:105;position:fixed;pointer-events:none;transition:0.25s all linear}
 .timeline_current_time{left:10px}
 .timeline_duration_time{right:10px}
-.timeline_current,.timeline_duration{left:0px;height:20px;position:fixed;top:0;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;pointer-events:none}
+.timeline_current,.timeline_duration{left:0px;height:24px;position:fixed;top:0;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;pointer-events:none}
 .timeline_duration{background:rgba(255,255,255,0.5);z-index:101}
 .timeline_current{background:rgba(0,0,0,0.5);z-index:102}
-footer{background:rgba(0,0,0,0.5);position:fixed;bottom:0;left:0;width:100%;height:20px;font-size:12px;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;color:#FFF;/*pointer-events:none;*/text-shadow:0 0 2px #000;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;box-shadow:0 0 2px rgba(0,0,0,0.5)}
+footer{background:rgba(0,0,0,0.5);position:fixed;bottom:0;left:0;width:100%;height:24px;font-size:12px;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;color:#FFF;/*pointer-events:none;*/text-shadow:0 0 2px #000;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;box-shadow:0 0 2px rgba(0,0,0,0.5)}
 footer a,footer span{display:inline-block;padding:0 5px;color:#FFF;text-decoration:none;cursor:pointer;pointer-events:auto;transition:0.25s all ease-out}
 footer a:hover,footer span:hover{background-color:rgba(255,255,255,0.5);color:#FFF;transition:0.25s all ease-out}
-.link_left{position:fixed;height:20px;line-height:20px;padding-left:10px;left:0;bottom:0;transition:0.25s all linear}
-.link_right{position:fixed;height:20px;line-height:20px;padding-right:10px;right:0;bottom:0;transition:0.25s all linear}
+.link_left{position:fixed;height:24px;line-height:24px;padding-left:10px;left:0;bottom:0;transition:0.25s all linear}
+.link_left > a {float: left;}
+.link_right{position:fixed;height:24px;line-height:24px;padding-right:10px;right:0;bottom:0;transition:0.25s all linear}
+.link_right > * {float: left;}
 .link_right_user{display:inline}
 .link_right_user_btn>div{height:0px;overflow:hidden;opacity:0;bottom:0px;-webkit-transition:0.25s all ease-in;-o-transition:0.25s all ease-in;transition:0.25s all ease-in;right:10px;background:rgba(0,0,0,0.5);position:fixed;cursor:auto}
-.link_right_user_btn:hover>div{height:auto;overflow:hidden;opacity:1;bottom:20px;-webkit-transition:0.25s all ease-out;-o-transition:0.25s all ease-out;transition:0.25s all ease-out}
+.link_right_user_btn:hover>div{height:auto;overflow:hidden;opacity:1;bottom:24px;-webkit-transition:0.25s all ease-out;-o-transition:0.25s all ease-out;transition:0.25s all ease-out}
 .link_right_user_btn>div a{display:block;height:16px;line-height:16px}
 aside{width:200px;font-size:12px;position:fixed;height:100px;right:-180px;top:50%;margin-top:-50px;/*top:0;bottom:0;left:auto;margin:auto;*/background-color:rgba(0,0,0,0.5);-webkit-transition:0.25s all ease-in;-o-transition:0.25s all ease-in;transition:0.25s all ease-in;box-shadow:0 0 2px rgba(0,0,0,0.5);z-index:100}
 aside:hover{right:0;-webkit-transition:0.25s all ease-out;-o-transition:0.25s all ease-out;transition:0.25s all ease-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
@@ -89,11 +94,11 @@ aside .aside_album{background-image:url(http://moe.fm/public/images/fm/fav_music
 aside .aside_song{background-image:url(http://moe.fm/public/images/fm/fav_love_gray.png)}
 aside .aside_radio{background-image:url(http://moe.fm/public/images/fm/fav_star_gray.png)}
 aside .aside_random{background-image:url(http://moe.fm/public/images/fm/fav_magnifier_gray.png)}
-.share_panel,.setting_background_panel,.login_panel,.about_panel,.穿越_panel{background:rgba(255,255,255,0.5);box-shadow:0 0 0 5000px rgba(0,0,0,0.5);border-radius:2px;padding:20px;width:200px;height:100px;position:absolute;top:0;bottom:0;left:0;right:0;z-index:201;margin:auto;text-align:center;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;max-width:90%;max-height:90%}
+.panel{background:rgba(255,255,255,0.75);box-shadow:0 0 0 5000px rgba(0,0,0,0.5);border-radius:2px;padding:20px;width:200px;height:100px;position:absolute;top:0;bottom:0;left:0;right:0;z-index:201;margin:auto;text-align:center;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;max-width:90%;max-height:90%}
 .setting_background_panel{width:600px;height:400px}
-.share_panel button,.setting_background_panel button{margin:6px;font-size:14px}
+.share_panel button,.setting_background_panel button,.download_panel button{margin:6px;font-size:14px}
 .setting_background_panel textarea{width:100%;height:350px;background-color:rgba(255,255,255,0.5)}
-.share_panel_background,.setting_background_panel_background,.login_panel_background,.about_panel_background,.穿越_panel_background{width:100%;height:100%;position:fixed;z-index:200}
+.panel_background{width:100%;height:100%;position:fixed;z-index:200}
 .share_buttons{display:block;margin:5px}
 .share_buttons .share-button{height:16px;width:16px;background:transparent url('http://moe.fm/public/images/fm/share_button.png?v=20120520') no-repeat;opacity:0.6;-webkit-transition:0.25s opacity ease-in;-o-transition:0.25s opacity ease-in;transition:0.25s opacity ease-in;display:inline-block}
 .share_buttons .share-button:hover{opacity:1;-webkit-transition:0.25s opacity ease-out;-o-transition:0.25s opacity ease-out;transition:0.25s opacity ease-out;}
@@ -105,68 +110,71 @@ aside .aside_random{background-image:url(http://moe.fm/public/images/fm/fav_magn
 .share_buttons .share-button.share-163{background-position:0 -64px}
 .share_buttons .share-button.share-googleplus{background-position:0 -144px}
 .share_buttons .share-button.share-dianbo{background-position:0 -160px}
-.login_panel{width:500px;height:150px}
+.login_panel{width:500px;height:150px;text-align: center;}
 .about_panel{font-size:12px;width:500px;height:200px}
 .穿越_panel{width:500px;height:200px}
+.notification_panel{width:400px;text-align:left;height:150px;font-size:14px;}
+.download_panel{font-size:14px}
+.download_panel button{width:85px;}
 .error_notification{position:fixed;right:10px;padding:5px;bottom:0px;box-shadow:0 0 1px 5px rgba(0,0,0,0.5);background:rgba(0,0,0,0.5);font-size:12px;color:#fff;opacity:0;-webkit-transition:0.25s all linear;-o-transition:0.25s all linear;transition:0.25s all linear;pointer-events:none}
 .cover_loading_notification{width:100%;height:100%;background:rgba(0,0,0,0.5);color:#FFF;opacity:0;text-shadow:0 0 2px #FFF;pointer-events:none;transition:0.25s all linear}
 a{color:#000}
-@media all and (min-width:500px) and (max-width:600px),all and (min-height:450px) and (max-height:600px){
+@media screen and (min-width:500px) and (max-width:600px),screen and (min-height:450px) and (max-height:600px){
 	main{width:500px;height:400px;font-size:14px}
 	.cover{width:250px;height:250px;margin:5px auto}
 	.info ul{margin:5px 0}
 	.c_volume_range{max-width:80px;height:20px;margin-top:8px}
 	.control2>span{font-size:150px;padding:50px}
 }
-@media all and (min-width:500px) and (min-height:200px) and (max-height:450px),all and (max-width:500px) and (max-height:299px){
+@media screen and (min-width:500px) and (min-height:200px) and (max-height:450px),screen and (max-width:500px) and (max-height:299px){
 	main{width:500px;height:165px;font-size:14px}
 	.cover{width:150px;height:150px;float:left;margin:5px}
 	.info ul{margin:1em 0}
 	.c_volume{max-width:3em}
 	.c_volume_range{max-width:50px;height:14px;margin-top:10px}
-	.c_volume_range::-webkit-slider-container,.c_volume_range::-webkit-slider-runnable-track,.c_volume_range::-webkit-slider-thumb{height:1em}
-	.c_volume_range::-moz-range-track,.c_volume_range::-moz-range-thumb{height:1em}
+	.c_volume_range::-webkit-slider-container,.c_volume_range::-webkit-slider-runnable-traconsumerKey,.c_volume_range::-webkit-slider-thumb{height:1em}
+	.c_volume_range::-moz-range-traconsumerKey,.c_volume_range::-moz-range-thumb{height:1em}
 	.control>span{font-size:32px}
 	.control2>span{font-size:90px;padding:30px}
 }
-@media all and (max-height:200px){
+@media screen and (max-height:200px){
 	main{width:400px;height:105px;font-size:12px}
 	.cover{width:100px;height:100px;margin:0;float:left}
 	.info ul{margin:0}
 	.info ul li{padding:4px 2px}
 	.c_volume{max-width:3em}
 	.c_volume_range{max-width:40px;height:14px;margin-top:5px}
-	.c_volume_range::-webkit-slider-container,.c_volume_range::-webkit-slider-runnable-track,.c_volume_range::-webkit-slider-thumb{height:1em}
-	.c_volume_range::-moz-range-track,.c_volume_range::-moz-range-thumb{height:1em}
+	.c_volume_range::-webkit-slider-container,.c_volume_range::-webkit-slider-runnable-traconsumerKey,.c_volume_range::-webkit-slider-thumb{height:1em}
+	.c_volume_range::-moz-range-traconsumerKey,.c_volume_range::-moz-range-thumb{height:1em}
 	.control>span{font-size:24px}
 	.control2>span{font-size:50px;padding:25px}
 }
-@media all and (max-height:150px){
-	.timeline,.timeline>*{top:-20px!important}
-	footer,footer>*{bottom:-20px!important}
+@media screen and (max-height:150px){
+	.timeline,.timeline>*{top:-24px!important}
+	footer,footer>*{bottom:-24px!important}
 	aside{right:-200px}
 	aside,footer,.timeline{box-shadow:none}
 }
-@media all and (max-width:500px) and (min-height:300px){
+@media screen and (max-width:500px) and (min-height:300px){
 	main{width:300px;height:330px;font-size:12px}
 	.cover{width:200px;height:200px;margin:5px auto}
 	.control>span{font-size:24px}
 	.c_volume_range{max-width:50px;height:14px;margin-top:0px}
 	.control{font-size:1em}
 	.control2>span{font-size:120px;padding:40px}
-	.c_volume_range::-webkit-slider-container,.c_volume_range::-webkit-slider-runnable-track,.c_volume_range::-webkit-slider-thumb{height:1em}
-	.c_volume_range::-moz-range-track,.c_volume_range::-moz-range-thumb{height:1em}
+	.c_volume_range::-webkit-slider-container,.c_volume_range::-webkit-slider-runnable-traconsumerKey,.c_volume_range::-webkit-slider-thumb{height:1em}
+	.c_volume_range::-moz-range-traconsumerKey,.c_volume_range::-moz-range-thumb{height:1em}
 }
-@media all and (max-width:500px) and (max-height:380px) and (min-height:300px){
+@media screen and (max-width:500px) and (max-height:380px) and (min-height:300px){
 	main{height:270px}
 	.cover{width:150px;height:150px}
 	.control2>span{font-size:90px;padding:30px}
 	.info ul li{padding:4px}
 }
-@media all and (-ms-high-contrast: active), (-ms-high-contrast: none){
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none){
 	.c_volume_range{margin-left:-10px;box-shadow:0 0 1px #000}
 }
-@media all and (max-width:500px){
+@media screen and (max-width:500px){
 	.link_left{-webkit-transform:translateX(-300px);transform:translateX(-300px)}
 }
 </style>
@@ -178,12 +186,12 @@ a{color:#000}
 	<div class="cover"><div class="control2"><span class="c_play" title="播放">播</span><span class="c_pause" title="暂停" hidden="hidden">停</span></div><img class="cover_preload" width="0" height="0"><div class="cover_loading_notification"></div></div>
 	<div class="info">
 		<ul>
-			<li class="title">Title</li>
-			<li class="artist">Artist</li>
-			<li class="album">Album</li>
+			<li class="title">Loading...</li>
+			<li class="artist"></li>
+			<li class="album"></li>
 		</ul>
 	</div>
-	<div class="control"><!--<span class="c_play" title="播放">播</span><span class="c_pause" title="暂停" hidden="hidden">停</span>--><span class="c_previous" title="上一曲">上</span><span class="c_next" title="下一曲">下</span><span class="c_like" title="喜欢">藏</span><span class="c_dislike" title="抛弃">弃</span><span class="c_volume" title="音量"><span class="c_volume_icon">大</span><input class="c_volume_range" type="range"></span><span class="c_share" title="分享">享</span></div>
+	<div class="control"><!--<span class="c_play" title="播放">播</span><span class="c_pause" title="暂停" hidden="hidden">停</span>--><span class="c_previous" title="上一曲">上</span><span class="c_next" title="下一曲">下</span><span class="c_like" title="喜欢">藏</span><span class="c_dislike" title="抛弃">弃</span><span class="c_volume" title="音量"><span class="c_volume_icon">大</span><input class="c_volume_range" type="range"></span><span class="c_download" hidden="hidden">存</span><span class="c_share" title="分享">享</span></div>
 	<div class="timeline">
 		<div class="timeline_duration"></div>
 		<div class="timeline_current"></div>
@@ -191,7 +199,7 @@ a{color:#000}
 		<div class="timeline_current_time"></div>
 	</div>
 </main>
-<aside>
+<aside hidden="hidden">
 	<ul>
 		<li class="aside_album">我收藏的专辑</li>
 		<li class="aside_song">我喜欢的曲目</li>
@@ -210,7 +218,11 @@ a{color:#000}
 	<img class="background_preload" width="0" height="0">
 </footer>
 
+<script src="sha1.js"></script>
+<script src="oauth.js"></script>
 <script>
+'use strict';
+
 var audio_pretest=document.createElement('audio');
 if(audio_pretest.canPlayType('audio/mpeg')==''){
 	alert('很抱歉，看起来您的浏览器不支持 MPEG (MP3) 文件……\n支持 MPEG 编码的浏览器请参考 http://caniuse.com/#feat=mpeg4');
@@ -235,6 +247,7 @@ var setting=JSON.parse(localStorage.getItem('moefm-html5-setting'))||{},
 	c_volume=document.getElementsByClassName('c_volume')[0],
 	c_volume_icon=document.getElementsByClassName('c_volume_icon')[0],
 	c_volume_range=document.getElementsByClassName('c_volume_range')[0],
+	c_download=document.getElementsByClassName('c_download')[0],
 	c_share=document.getElementsByClassName('c_share')[0],
 	timeline=document.getElementsByClassName('timeline')[0],
 	timeline_duration=document.getElementsByClassName('timeline_duration')[0],
@@ -264,6 +277,8 @@ var setting=JSON.parse(localStorage.getItem('moefm-html5-setting'))||{},
 	loop=0,
 	is_login=false,
 	is_ended=false,
+	//touch_X,
+	//touch_Y,
 	// Thanks to QB
 	generateOauthUrl = function (url, options) {
 		var accessor = {
@@ -289,12 +304,13 @@ var setting=JSON.parse(localStorage.getItem('moefm-html5-setting'))||{},
 		OAuth.SignatureMethod.sign(message, accessor);
 		return url + (url.indexOf('?')>=0?'&':'?') + OAuth.formEncode(message.parameters);
 	},
-	ck='\u0061\u0065\u0063\u0065\u0065\u0035\u0064\u0030\u0062\u0030\u0035\u0034\u0061\u0035\u0062\u0039\u0033\u0065\u0036\u0039\u0037\u0035\u0061\u0062\u0061\u0064\u0063\u0066\u0037\u0064\u0062\u0032\u0030\u0035\u0032\u0036\u0034\u0062\u0065\u0035\u0031',
-	cs='\u0065\u0037\u0038\u0034\u0061\u0066\u0061\u0033\u0062\u0062\u0030\u0066\u0034\u0030\u0034\u0038\u0062\u0066\u0037\u0064\u0039\u0030\u0066\u0061\u0066\u0033\u0033\u0039\u0030\u0036\u0037\u0034',
-	rt,
-	rs,
-	accessToken,
-	accessTokenSecret,
+	consumerKey='\u0061\u0065\u0063\u0065\u0065\u0035\u0064\u0030\u0062\u0030\u0035\u0034\u0061\u0035\u0062\u0039\u0033\u0065\u0036\u0039\u0037\u0035\u0061\u0062\u0061\u0064\u0063\u0066\u0037\u0064\u0062\u0032\u0030\u0035\u0032\u0036\u0034\u0062\u0065\u0035\u0031',
+	consumerSecret='\u0065\u0037\u0038\u0034\u0061\u0066\u0061\u0033\u0062\u0062\u0030\u0066\u0034\u0030\u0034\u0038\u0062\u0066\u0037\u0064\u0039\u0030\u0066\u0061\u0066\u0033\u0033\u0039\u0030\u0036\u0037\u0034',
+	requestToken = localStorage.getItem('requestToken'),
+	requestTokenSecret = localStorage.getItem('requestTokenSecret'),
+	requestTokenTimedOut = localStorage.getItem('requestTokenTimedOut'),
+	accessToken = localStorage.getItem('accessToken'),
+	accessTokenSecret = localStorage.getItem('accessTokenSecret'),
 	options;
 
 /*if(audio.canPlayType('audio/mpeg')==''){
@@ -389,6 +405,9 @@ function update_error(t,c){
 		case 'login':
 			context='获取登录数据失败<br>'+c;
 			break;
+		case 'download':
+			context='获取下载数据失败<br>'+c;
+			break;
 		default:
 			context='Seems that something lovely goes wrong...<br>'+c;
 	}
@@ -409,8 +428,8 @@ function update_log(){
 		var xhr=new XMLHttpRequest(),
 			options={
 				method:'get',
-				consumerKey: ck,
-				consumerSecret: cs,
+				consumerKey: consumerKey,
+				consumerSecret: consumerSecret,
 				token:accessToken,
 				tokenSecret:accessTokenSecret,
 				//obj_id:playlist[count].sub_id
@@ -440,8 +459,8 @@ function update_fav(t,d){
 		url='http://api.moefou.org/fav/'+(d==0?'add':'delete')+'.json?fav_type='+t+'&fav_obj_type=song&fav_obj_id='+playlist[count].sub_id+'&_='+new Date().getTime(),
 		options={
 			method:'get',
-			consumerKey: ck,
-			consumerSecret: cs,
+			consumerKey: consumerKey,
+			consumerSecret: consumerSecret,
 			token:accessToken,
 			tokenSecret:accessTokenSecret,
 			//fav_type:d,
@@ -615,8 +634,8 @@ function update_playlist(d,k,m){
 		if(is_login==true){
 			var options={
 					method:'get',
-					consumerKey: ck,
-					consumerSecret: cs,
+					consumerKey: consumerKey,
+					consumerSecret: consumerSecret,
 					token:accessToken,
 					tokenSecret:accessTokenSecret
 				};
@@ -677,16 +696,50 @@ function update_background_count(v){
 function share(){
 	var div=document.createElement('div'),
 		div2=document.createElement('div');
-	div.className='share_panel';
-	div2.className='share_panel_background';
+	div.className='share_panel panel';
+	div2.className='share_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
-	div.innerHTML='<button onclick="var p=prompt(\'请按下 Ctrl + C 以复制，点击确定可跳转至该页面，点击取消返回。\',\''+playlist[count].sub_url+'#'+playlist[count].sub_title+' | 萌否电台\');if(p!=null)window.open(\''+playlist[count].sub_url+'\',\'information\')">复制当前曲目地址</button><button onclick="var p=prompt(\'请按下 Ctrl + C 以复制，点击确定可跳转至该页面，点击取消返回。\',\''+playlist[count].wiki_url+'#'+playlist[count].wiki_title+' | 萌否电台\');if(p!=null)window.open(\''+playlist[count].wiki_url+'\',\'information\')">复制当前专辑地址</button><span class="share_buttons">'+playlist[count].share_buttons+'</span>';
+	div.innerHTML='<button onclick="var p=prompt(\'请按下 Ctrl + C 以复制，点击确定可跳转至该页面，点击取消返回。\',\''+playlist[count].sub_url+'#'+playlist[count].sub_title+' | 萌否电台\');if(p!=null)window.open(\''+playlist[count].sub_url+'\',\'_blank\')">复制当前曲目地址</button><button onclick="var p=prompt(\'请按下 Ctrl + C 以复制，点击确定可跳转至该页面，点击取消返回。\',\''+playlist[count].wiki_url+'#'+playlist[count].wiki_title+' | 萌否电台\');if(p!=null)window.open(\''+playlist[count].wiki_url+'\',\'_blank\')">复制当前专辑地址</button><span class="share_buttons">'+playlist[count].share_buttons+'</span>';
+	document.body.appendChild(div);
+	document.body.appendChild(div2);
+	div2.addEventListener('click',function(){
+		div.parentElement.removeChild(div);
+		div2.parentElement.removeChild(div2);
+	});
+}
+function download(){
+	var div=document.createElement('div'),
+		div2=document.createElement('div'),
+		xhr=new XMLHttpRequest();
+	div.className='download_panel panel';
+	div2.className='download_panel_background panel_background';
+	div2.title='点击黑色区域以退出';
+	div.innerHTML='正在获取该曲目支持的码率......';
+	var filename=playlist[count].sub_title+'.mp3';
 	document.body.appendChild(div);
 	document.body.appendChild(div2);
 	div2.addEventListener('click',function(){
 		div.parentElement.removeChild(div);
 		div2.parentElement.removeChild(div2);
 	})
+	xhr.onreadystatechange=function(){
+		if(xhr.readyState==4){
+			if(xhr.status==200){
+				var data=JSON.parse(xhr.responseText);
+				download_str='请选择欲下载的文件<br>';
+				if(data.error!=0)return update_error('download',data.error_msg);
+				for(var i in data.response){
+					if(data.response[i].exist==1){
+						download_str+='<a href="'+data.response[i].url+'" download="'+filename+'"><button>'+i+' Kbps</button></a>';
+					}
+				}
+				div.innerHTML=download_str;
+			}
+			else update_error('download','抓取数据出现错误<br>XHR Ready State: '+xhr.readyState+'<br>XHR Status: '+xhr.statusText);
+		}
+	}
+	xhr.open('GET','/hqac/?url='+encodeURIComponent(audio.src));
+	xhr.send();
 }
 function set_login(){
 	link_right_user.innerHTML='<a class="right" target="_blank" href="http://moefou.org/register?redirect=http%3A%2F%2Fmoefm.ccloli.com">注册</a><a class="right">登入</a>';
@@ -704,12 +757,13 @@ function check_login(){
 		url='http://api.moefou.org/user/detail.json',
 		options={
 			method:'get',
-			consumerKey: ck,
-			consumerSecret: cs,
+			consumerKey: consumerKey,
+			consumerSecret: consumerSecret,
 			token:accessToken,
 			tokenSecret:accessTokenSecret
 		};
 	xhr.onreadystatechange=function(){
+		console.log(xhr)
 		if(xhr.readyState==4){
 			if(xhr.status==200){
 				is_login=true;
@@ -739,8 +793,8 @@ function check_login(){
 				if(playlist.length==0)start();
 				/*options={
 					method:'get',
-					consumerKey: ck,
-					consumerSecret: cs,
+					consumerKey: consumerKey,
+					consumerSecret: consumerSecret,
 					token:accessToken,
 					tokenSecret:accessTokenSecret
 				}*/
@@ -765,32 +819,8 @@ function check_login(){
 				else{
 					update_error('login','无法获取用户信息，可能是网络问题或服务器故障，请稍候刷新重试......<br>XHR Ready State: '+xhr.readyState+'<br>XHR Status: '+xhr.statusText);
 					set_login();
+					start();
 				}
-			}
-		}
-	}
-	xhr.open('GET',generateOauthUrl(url,options));
-	xhr.send();
-}
-function fetch_oauth_token(){
-	var url='http://api.moefou.org/oauth/request_token',
-		options={
-			method: 'get',
-			consumerKey: ck,
-			consumerSecret: cs,
-			callback: 'http://moefm.ccloli.com/oauth_callback.html'
-		},
-		xhr=new XMLHttpRequest();
-	xhr.onreadystatechange=function(){
-		if(xhr.readyState==4){
-			if(xhr.status==200){
-				var data=xhr.responseText;
-				rt=data.replace(/.*\boauth_token=([a-z0-9]+).*/, '$1'),
-				rs=data.replace(/.*\boauth_token_secret=([a-z0-9]+).*/, '$1');
-				if(document.getElementsByClassName('login_confirm')[0]&&document.getElementsByClassName('login_confirm')[0].hasAttribute('disabled'))document.getElementsByClassName('login_confirm')[0].removeAttribute('disabled');
-			}
-			else{
-				update_error('login','XHR Ready State: '+xhr.readyState+'<br>XHR Status: '+xhr.statusText);
 			}
 		}
 	}
@@ -800,61 +830,109 @@ function fetch_oauth_token(){
 function login(){
 	var div=document.createElement('div'),
 		div2=document.createElement('div');
-	div.className='login_panel';
-	div2.className='login_panel_background';
+	div.className='login_panel panel';
+	div2.className='login_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
 	div.innerHTML='您即将使用您的萌否账号授权登录本站点，授权过程均在萌否服务器完成，本站点不会记录您的密码，但您授权后的 access token 数据将以可能不安全的方式储存在浏览器中。<br>如果您之前已授权却仍被要求重新授权，那么可能是您目前在另一台计算机上，或您曾经清除过浏览器数据集而误清理了 access token。<br><button class="login_confirm" disabled="disabled">我已了解，开始授权</button>';
 	document.body.appendChild(div);
 	document.body.appendChild(div2);
-	fetch_oauth_token();
+	var fetch_oauth_token = function () {
+		var url='http://api.moefou.org/oauth/request_token',
+			options={
+				method: 'get',
+				consumerKey: consumerKey,
+				consumerSecret: consumerSecret,
+				callback: location.origin + location.pathname + 'oauth_callback.html'
+			},
+			xhr=new XMLHttpRequest();
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					var data=xhr.responseText;
+					requestToken=data.replace(/.*\boauth_token=([a-z0-9]+).*/, '$1'),
+					requestTokenSecret=data.replace(/.*\boauth_token_secret=([a-z0-9]+).*/, '$1');
+					requestTokenTimedOut = new Date().getTime() + 3000000;
+					window.localStorage.setItem('requestToken', requestToken);
+					window.localStorage.setItem('requestTokenSecret', requestTokenSecret);
+					window.localStorage.setItem('requestTokenTimedOut', requestTokenTimedOut);
+					//authorize();
+					if(document.getElementsByClassName('login_confirm')[0]&&document.getElementsByClassName('login_confirm')[0].hasAttribute('disabled'))document.getElementsByClassName('login_confirm')[0].removeAttribute('disabled');
+				}
+				else{
+					update_error('login','XHR Ready State: '+xhr.readyState+'<br>XHR Status: '+xhr.statusText);
+				}
+			}
+		}
+		xhr.open('GET',generateOauthUrl(url,options));
+		xhr.send();
+	}
+	var authorize = function(){
+		var url='http://api.moefou.org/oauth/authorize',
+			options={
+				method:'get',
+				consumerKey:consumerKey,
+				consumerSecret:consumerSecret,
+				token:requestToken,
+				tokenSecret:requestTokenSecret
+			},
+			re_url=generateOauthUrl(url, options);
+		window.open(re_url,'_blank');
+		div.innerHTML='请在新弹出的页面中完成授权。<br>如果浏览器未弹出授权页面，请 <a href="'+re_url+'" target="_blank"><button>点击此处</button></a> 打开授权页面。<br>请于 1 小时内完成授权，授权完成后此页面会自动更新。';
+		window.onstorage = function (event){
+			if (event.key == 'verifier') {
+				window.onstorage = null;
+				verify(event.newValue);
+				localStorage.removeItem(verifier);
+			}
+		}
+	}
+	var verify = function (verifier){
+		div.innerHTML='正在获取 OAuth 授权数据......';
+		var url='http://api.moefou.org/oauth/access_token',
+			options={
+				method:'get',
+				consumerKey:consumerKey,
+				consumerSecret:consumerSecret,
+				token:requestToken,
+				tokenSecret:requestTokenSecret,
+				verifier:verifier
+			},
+			xhr=new XMLHttpRequest();
+		xhr.onreadystatechange=function(){
+			if(xhr.readyState==4){
+				if(xhr.status==200){
+					var data=xhr.responseText,
+						accessToken=data.replace(/.*\boauth_token=([a-z0-9]+).*/,'$1'),
+						accessTokenSecret=data.replace(/.*\boauth_token_secret=([a-z0-9]+).*/,'$1');
+					localStorage.setItem('accessToken',accessToken);
+					localStorage.setItem('accessTokenSecret',accessTokenSecret);
+					check_login();
+					div.parentElement.removeChild(div);
+					div2.parentElement.removeChild(div2);
+				}
+				else {
+					div.innerHTML='验证登录失败，请重试......';
+					update_error('login','XHR Ready State: '+xhr.readyState+'<br>XHR Status: '+xhr.statusText);
+				}
+				localStorage.removeItem('requestToken');
+				localStorage.removeItem('requestTokenSecret');
+				localStorage.removeItem('requestTokenTimedOut');
+				localStorage.removeItem('verifier');
+				requestTokenTimedOut = 0;
+			}
+		}
+		xhr.open('GET',generateOauthUrl(url,options));
+		xhr.send();
+	}
+	document.getElementsByClassName('login_confirm')[0].addEventListener('click', authorize);
+	if (requestTokenTimedOut - new Date() < 0) fetch_oauth_token();
+	if (localStorage.getItem('verifier') && requestToken) verify(localStorage.getItem('verifier'));
 	div2.addEventListener('click',function(){
-		if(confirm('您确认要退出登录吗？')){
+		if(confirm('您确认要取消登录吗？')){
 			div.parentElement.removeChild(div);
 			div2.parentElement.removeChild(div2);
 		}
 	});
-	div.getElementsByClassName('login_confirm')[0].addEventListener('click',function(){
-		var url='http://api.moefou.org/oauth/authorize',
-			options={
-				method:'get',
-				consumerKey:ck,
-				consumerSecret:cs,
-				token:rt,
-				tokenSecret:rs
-			},
-			re_url=generateOauthUrl(url, options);
-		div.innerHTML='请在新弹出的页面中完成授权，完成授权后请复制萌否开放平台提供的验证码，并粘贴于下面的文本框中。<br>如果浏览器未弹出授权页面，请手动<a href="'+re_url+'" target="_blank">点击此处</a>打开授权页面。<br>请于 1 小时内完成授权。<br><input type="text" placeholder="请在此输入验证码" class="login_verifier"><br><button class="login_confirm_last">确定</button>';
-		div.getElementsByClassName('login_confirm_last')[0].addEventListener('click',function(){
-			var url='http://api.moefou.org/oauth/access_token',
-				options={
-					method:'get',
-					consumerKey:ck,
-					consumerSecret:cs,
-					token:rt,
-					tokenSecret:rs,
-					verifier:div.getElementsByClassName('login_verifier')[0].value
-				}
-				xhr=new XMLHttpRequest();
-			xhr.onreadystatechange=function(){
-				if(xhr.readyState==4){
-					if(xhr.status==200){
-						var data=xhr.responseText,
-							accessToken=data.replace(/.*\boauth_token=([a-z0-9]+).*/,'$1'),
-							accessTokenSecret=data.replace(/.*\boauth_token_secret=([a-z0-9]+).*/,'$1');
-						localStorage.setItem('accessToken',accessToken);
-						localStorage.setItem('accessTokenSecret',accessTokenSecret);
-						check_login();
-						div.parentElement.removeChild(div);
-						div2.parentElement.removeChild(div2);
-					}
-					else update_error('login','XHR Ready State: '+xhr.readyState+'<br>XHR Status: '+xhr.statusText);
-				}
-			}
-			xhr.open('GET',generateOauthUrl(url,options));
-			xhr.send();
-		})
-		window.open(re_url,'authorized');
-	})
 }
 function logout(){
 	var c=confirm('您即将登出，在下次登录时需要重新授权，是否继续？');
@@ -862,15 +940,15 @@ function logout(){
 		localStorage.removeItem('accessToken');
 		localStorage.removeItem('accessTokenSecret');
 		set_login();
-		var c=confirm('数据已清除，您已成功登出本站。\n是否需要前往萌否开放平台取消授权？');
-		if(c==true)window.open('http://open.moefou.org/apps/authorized','authorized');
+		/*var c=confirm('数据已清除，您已成功登出本站。\n是否需要前往萌否开放平台取消授权？');
+		if(c==true)window.open('http://open.moefou.org/apps/authorized','authorized');*/
 	}
 }
 function about(){
 	var div=document.createElement('div'),
 		div2=document.createElement('div');
-	div.className='about_panel';
-	div2.className='about_panel_background';
+	div.className='about_panel panel';
+	div2.className='about_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
 	div.innerHTML='<strong>MoeFM HTML5 Project (Beta)</strong><br>萌否电台 HTML5 版本（非官方）<br>作者：<a href="http://moefou.org/home/864907600cc" target="_blank">864907600cc</a><br>致谢：<a href="http://blog.likelikeslike.com/" target="_blank">Jak Wings</a>（提供萌否 OAuth 认证 example）、<a href="http://moefou.org/home/zanko" target="_blank">zanko</a>（提供 API 使用支持）<br>桌面设备测试：Chrome 32/33 (Windows 7 64-bit/Ubuntu 13.10 64-bit)、Firefox 25 (Windows 7 64-bit)、Internet Explorer (Windows 7 64-bit)<br>移动设备测试：Android 自带浏览器（Android 4.1/4.3）、UC 浏览器（Android 2.2/4.3，不完全支持）、海豚浏览器（Android 4.3）<br>Powered by <a href="http://moe.fm" target="_blank">Moe.FM</a> | Hosted on <a href="https://www.openshift.com">OpenShift</a><br><p><a href="http://moefou.org/group/moefm_html5_project" target="_blank">项目小组</a> <a href="http://moefou.org/topic/1730" target="_blank">Bug 反馈</a></p>';
 	document.body.appendChild(div);
@@ -885,8 +963,8 @@ function 穿越OAO(){
 	audio.pause();
 	var div=document.createElement('div'),
 		div2=document.createElement('div');
-	div.className='穿越_panel';
-	div2.className='穿越_panel_background';
+	div.className='穿越_panel panel';
+	div2.className='穿越_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
 	div.innerHTML='扫描二维码，在移动设备上继续收听，无需重新登录<br><img src="http://moefm.ccloli.com/qr.php?data='+encodeURIComponent('http://moefm.ccloli.com/?song='+playlist[count].sub_id+'#'+(accessToken!=null?('accessToken='+accessToken+',accessTokenSecret='+accessTokenSecret)+',':'')+'currentTime='+audio.currentTime)+'" alt="" width="180" height="180">';
 	document.body.appendChild(div);
@@ -903,27 +981,31 @@ function start(){
 	else if(location.search.indexOf('radio')>=0)update_playlist(location.search.match(/radio=[0-9,]*/)[0]);
 	else update_playlist();
 }
-
 audio.addEventListener('play',function(){
 	is_ended=false;
 	c_play.setAttribute('hidden','hidden');
 	c_pause.removeAttribute('hidden');
 	update_info();
-})
+});
 audio.addEventListener('pause',function(){
 	if(is_ended!=true){
 		c_pause.setAttribute('hidden','hidden');
 		c_play.removeAttribute('hidden');
 	}
-})
+});
+audio.addEventListener('progress', function(){
+	var buffered = audio.buffered;
+	var duration = audio.duration;
+	if(buffered.length>0 && !isNaN(duration))timeline_duration.style.width=(buffered.end(buffered.length-1).toFixed(2))/(duration.toFixed(2))*100+'%';
+});
 audio.addEventListener('timeupdate',function(){
 	if(!isNaN(audio.duration)){
 		timeline_current.style.width=(audio.currentTime/audio.duration)*100+'%';
-		if(audio.buffered.length>0)timeline_duration.style.width=(audio.buffered.end(audio.buffered.length-1).toFixed(2))/(audio.duration.toFixed(2))*100+'%';
+		if(buffered.length>0)timeline_duration.style.width=(buffered.end(buffered.length-1).toFixed(2))/(duration.toFixed(2))*100+'%';
 		timeline_current_time.innerHTML=parseInt(audio.currentTime/60)+':'+(parseInt(audio.currentTime)%60<10?'0'+parseInt(audio.currentTime)%60:parseInt(audio.currentTime)%60);
 		timeline_duration_time.innerHTML=parseInt(audio.duration/60)+':'+(parseInt(audio.duration)%60<10?'0'+parseInt(audio.duration)%60:parseInt(audio.duration)%60);
 	}
-})
+});
 audio.addEventListener('error',function(){
 	var context;
 	switch (audio.error.code){
@@ -960,17 +1042,17 @@ audio.addEventListener('error',function(){
 	}
 	update_error('audio',context);
 	audio_play();
-})
+});
 audio.addEventListener('ended',function(){
 	is_ended=true;
 	if(next==0)update_log();
 	else next=0;
 	audio_play();
-})
+});
 cover_preload.addEventListener('load',function(){
 	cover.style.backgroundImage='url('+playlist[count].cover.large+')';
 	cover_loading_notification.style.opacity=0;
-})
+});
 cover_preload.addEventListener('error',function(){
 	if(cover_retry<3){
 		update_error('cover','正在重试加载......');
@@ -981,20 +1063,20 @@ cover_preload.addEventListener('error',function(){
 		update_error('cover','超过最大重新加载次数限制');
 		cover_retry=0;
 	}
-})
-c_play.addEventListener('click',function(){audio.play();})
-c_pause.addEventListener('click',function(){audio.pause();})
+});
+c_play.addEventListener('click',function(){audio.play();});
+c_pause.addEventListener('click',function(){audio.pause();});
 c_previous.addEventListener('click',function(){
 	if(count>0){
 		next=1;
 		count-=2;
 		audio_play();
 	}
-})
+});
 c_next.addEventListener('click',function(){
 	next=1;
 	audio_play();
-})
+});
 c_like.addEventListener('click',function(){
 	if(c_like.hasAttribute('meow')){
 		update_fav(1,1);
@@ -1002,7 +1084,7 @@ c_like.addEventListener('click',function(){
 	else{
 		update_fav(1,0);
 	}
-})
+});
 c_dislike.addEventListener('click',function(){
 	if(c_dislike.hasAttribute('meow')){
 		update_fav(2,1);
@@ -1010,11 +1092,10 @@ c_dislike.addEventListener('click',function(){
 	else{
 		update_fav(2,0);
 	}
-})
+});
 c_volume_icon.addEventListener('click',function(){
 	if(c_volume_range.hasAttribute('disabled')){
 		c_volume_range.removeAttribute('disabled');
-		c_volume_range.style.opacity=1;
 		audio.volume=volume/100;
 		update_volume_icon(volume);
 	}
@@ -1022,23 +1103,23 @@ c_volume_icon.addEventListener('click',function(){
 		volume=audio.volume*100;
 		c_volume_icon.innerHTML='静';
 		c_volume_range.setAttribute('disabled','disabled');
-		c_volume_range.style.opacity=0.75;
 		audio.volume=0;
 	}
-})
+});
 c_volume_range.addEventListener('change',function(){
 	volume=c_volume_range.value;
 	audio.volume=volume/100;
 	update_volume_icon(volume);
 	setting.volume=volume;
 	localStorage.setItem('moefm-html5-setting',JSON.stringify(setting));
-})
-c_share.addEventListener('click',function(){share();})
-timeline.addEventListener('mouseup',function(event){audio.currentTime=(event.clientX/document.body.clientWidth)*audio.duration;})
-aside_album.addEventListener('click',function(){p=0;update_playlist('fav=music');})
-aside_song.addEventListener('click',function(){p=0;update_playlist('fav=song');})
-aside_radio.addEventListener('click',function(){p=0;update_playlist('fav=radio');})
-aside_random.addEventListener('click',function(){p=0;url_data=null;update_playlist();})
+});
+c_download.addEventListener('click',function(){download();});
+c_share.addEventListener('click',function(){share();});
+timeline.addEventListener('mouseup',function(event){audio.currentTime=(event.clientX/document.body.clientWidth)*audio.duration;});
+aside_album.addEventListener('click',function(){p=0;update_playlist('fav=music');});
+aside_song.addEventListener('click',function(){p=0;update_playlist('fav=song');});
+aside_radio.addEventListener('click',function(){p=0;update_playlist('fav=radio');});
+aside_random.addEventListener('click',function(){p=0;url_data=null;update_playlist();});
 background_preload.addEventListener('load',function(){document.documentElement.style.backgroundImage='url('+background_preload.src+')';})
 background_preload.addEventListener('error',function(){update_error('background','获取背景图片时发生错误');})
 link_setting_background.addEventListener('click',function(){
@@ -1046,8 +1127,8 @@ link_setting_background.addEventListener('click',function(){
 		div2=document.createElement('div'),
 		t=document.createElement('textarea'),
 		b=document.createElement('button');
-	div.className='setting_background_panel';
-	div2.className='setting_background_panel_background';
+	div.className='setting_background_panel panel';
+	div2.className='setting_background_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
 	b.innerHTML='确定';
 	t.setAttribute('title','请在文本框内输入图片地址，以回车间隔，一行一个');
@@ -1104,6 +1185,57 @@ window.addEventListener('keydown',function(e){
 			break;
 	}
 })
+document.body.addEventListener('touchstart',function(event){
+	if(typeof event.changedTouches!='undefined'){
+		var touchobj=event.changedTouches[0];
+		//event.preventDefault();
+	}
+	else{
+		return false;
+	}
+	touch_X=touchobj.pageX;
+	touch_Y=touchobj.pageY;
+})
+document.body.addEventListener('touchend',function(event){
+	if(typeof event.changedTouches!='undefined'){
+		var touchobj=event.changedTouches[0];
+		//event.preventDefault();
+	}
+	else{
+		return false;
+	}
+	var touchf_X=touchobj.pageX;
+	var touchf_Y=touchobj.pageY;
+	var touche_X=touchf_X-touch_X;
+	var touche_Y=touchf_Y-touch_Y;
+	if(touche_X>0&&Math.abs(touche_X*10)>=document.body.clientWidth&&Math.abs(touche_X)>Math.abs(touche_Y*3)){
+		next=1;
+		audio_play();
+	}
+	else if(touche_X<0&&Math.abs(touche_X*10)>=document.body.clientWidth&&Math.abs(touche_X)>Math.abs(touche_Y*3)){
+		if(count>0){
+			next=1;
+			count-=2;
+			audio_play();
+		}
+	}
+	else if(touche_Y<0&&Math.abs(touche_Y*10)>=document.body.clientHeight&&Math.abs(touche_Y)>Math.abs(touche_X*3)){
+		if(c_like.hasAttribute('meow')){
+			update_fav(1,1);
+		}
+		else{
+			update_fav(1,0);
+		}
+	}
+	else if(touche_Y>0&&Math.abs(touche_Y*10)>=document.body.clientHeight&&Math.abs(touche_Y)>Math.abs(touche_X*3)){
+		if(c_dislike.hasAttribute('meow')){
+			update_fav(2,1);
+		}
+		else{
+			update_fav(2,0);
+		}
+	}
+})
 
 if(location.hash.indexOf('accessToken')>=0){
 	localStorage.setItem('accessToken',location.hash.match(/accessToken=([0-9a-f]{41})/)[1]);
@@ -1111,7 +1243,7 @@ if(location.hash.indexOf('accessToken')>=0){
 }
 
 if(localStorage.getItem('accessToken'))check_login();
-else {
+else{
 	set_login();
 	start();
 }
@@ -1121,6 +1253,10 @@ if(location.hash.indexOf('currentTime')>=0){
 		audio.currentTime=location.hash.match(/currentTime=([0-9.]+)/)[1];
 		audio.onplay=null;
 	}
+}
+if(navigator.userAgent.match(/Android|Silk|Mobile|Nexus|iPhone|iPad/)){
+	c_volume.setAttribute('hidden','hidden');
+	c_download.removeAttribute('hidden');
 }
 
 c_volume_range.value=volume;
@@ -1138,6 +1274,22 @@ if(location.hash.indexOf('background=0')<0){
 }
 if(location.hash.indexOf('loop=1')>=0){
 	loop=1;
+}
+
+if(!window.localStorage.getItem('notification')){
+	var div=document.createElement('div'),
+		div2=document.createElement('div');
+	div.className='notification_panel panel';
+	div2.className='notification_panel_background panel_background';
+	div2.title='点击黑色区域以退出';
+	div.innerHTML='现在您可以尝试使用手指滑动屏幕进行操作啦~~~ >w< <br><br>手势操作说明（仅支持可触摸设备）：<br>　　1. 从左向右滑为播放下一曲；<br>　　2. 从右向左滑为播放上一曲；<br>　　3. 从下往上滑为添加/取消收藏；<br>　　4. 从上往下滑为添加/取消抛弃。';
+	document.body.appendChild(div);
+	document.body.appendChild(div2);
+	div2.addEventListener('click',function(){
+		div.parentElement.removeChild(div);
+		div2.parentElement.removeChild(div2);
+	});
+	window.localStorage.setItem('notification','1');
 }
 
   /////////////////////////////////////////////////////////////////

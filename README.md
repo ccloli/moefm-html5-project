@@ -37,4 +37,4 @@ API: http://chart.apis.google.com
 
 版本更新说明
 -------------------
-Want to know more about update log? http://moefou.org/topic/1914
+http://moefou.org/topic/1914
