@@ -1000,6 +1000,7 @@ audio.addEventListener('progress', function(){
 });
 audio.addEventListener('timeupdate',function(){
 	var duration = audio.duration;
+	var buffered = audio.buffered;
 	var currentTime = audio.currentTime;
 	if(!isNaN(duration)){
 		timeline_current.style.width=(currentTime/duration)*100+'%';
