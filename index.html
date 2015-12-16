@@ -6,7 +6,7 @@
 	   | |\/| |/ _ \ / _ \  __| | |\/| |  |  __  |  | |  | |\/| | |   |___ \   | ___/ V _\/ _ \  | |/ _ \/ __|_   _/
 	   | |  | | (_) |  __/ |    | |  | |  | |  | |  | |  | |  | | |___ ___) |  | |  |  / | (_) | | |  __/ |__  | |
 	   |_|  |_|\___/ \___|_|    |_|  |_|  |_|  |_|  |_|  |_|  |_|_____|____/   |_|  |_|   \___/__| |\___/\___| | |__
-	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/ V 1.1.9.2 \___/
+	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/ V 1.1.9.3 \___/
 -->
 <html>
 <head>
@@ -669,7 +669,7 @@ function update_background(){
 				}
 			}
 		}
-		xhr.open('GET','http://moefm.ccloli.com/background/');
+		xhr.open('GET','/background/');
 		xhr.send();
 	}
 	else{
@@ -949,7 +949,7 @@ function about(){
 	div.className='about_panel panel';
 	div2.className='about_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
-	div.innerHTML='<strong>MoeFM HTML5 Project (Beta)</strong><br>萌否电台 HTML5 版本（非官方）<br>作者：<a href="http://moefou.org/home/864907600cc" target="_blank">864907600cc</a><br>致谢：<a href="http://blog.likelikeslike.com/" target="_blank">Jak Wings</a>（提供萌否 OAuth 认证 example）、<a href="http://moefou.org/home/zanko" target="_blank">zanko</a>（提供 API 使用支持）<br>桌面设备测试：Chrome 32/33 (Windows 7 64-bit/Ubuntu 13.10 64-bit)、Firefox 25 (Windows 7 64-bit)、Internet Explorer (Windows 7 64-bit)<br>移动设备测试：Android 自带浏览器（Android 4.1/4.3）、UC 浏览器（Android 2.2/4.3，不完全支持）、海豚浏览器（Android 4.3）<br>Powered by <a href="http://moe.fm" target="_blank">Moe.FM</a> | Hosted on <a href="https://www.openshift.com">OpenShift</a><br><p><a href="http://moefou.org/group/moefm_html5_project" target="_blank">项目小组</a> <a href="http://moefou.org/topic/1730" target="_blank">Bug 反馈</a></p>';
+	div.innerHTML='<strong>MoeFM HTML5 Project (Beta)</strong><br>萌否电台 HTML5 版本（非官方）<br>作者：<a href="http://moefou.org/home/864907600cc" target="_blank">864907600cc</a><br>致谢：<a href="http://blog.likelikeslike.com/" target="_blank">Jak Wings</a>（提供萌否 OAuth 认证 example）、<a href="http://moefou.org/home/zanko" target="_blank">zanko</a>（提供 API 使用支持）<br>桌面设备测试：Chrome 32/33 (Windows 7 64-bit/Ubuntu 13.10 64-bit)、Firefox 25 (Windows 7 64-bit)、Internet Explorer (Windows 7 64-bit)<br>移动设备测试：Android 自带浏览器（Android 4.1/4.3）、UC 浏览器（Android 2.2/4.3，不完全支持）、海豚浏览器（Android 4.3）<br>Powered by <a href="http://moe.fm" target="_blank">Moe.FM</a> | <a href="http://moefm.ccloli.com">Homepage</a><br><p><a href="http://moefou.org/group/moefm_html5_project" target="_blank">项目小组</a> <a href="http://moefou.org/topic/1730" target="_blank">Bug 反馈</a></p>';
 	document.body.appendChild(div);
 	document.body.appendChild(div2);
 	div2.addEventListener('click',function(){
@@ -965,7 +965,7 @@ function 穿越OAO(){
 	div.className='穿越_panel panel';
 	div2.className='穿越_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
-	div.innerHTML='扫描二维码，在移动设备上继续收听，无需重新登录<br><img src="http://moefm.ccloli.com/qr.php?data='+encodeURIComponent('http://moefm.ccloli.com/?song='+playlist[count].sub_id+'#'+(accessToken!=null?('accessToken='+accessToken+',accessTokenSecret='+accessTokenSecret)+',':'')+'currentTime='+audio.currentTime)+'" alt="" width="180" height="180">';
+	div.innerHTML='扫描二维码，在移动设备上继续收听，无需重新登录<br><img src="/qr.php?data='+encodeURIComponent(location.origin + '/?song='+playlist[count].sub_id+'#'+(accessToken!=null?('accessToken='+accessToken+',accessTokenSecret='+accessTokenSecret)+',':'')+'currentTime='+audio.currentTime)+'" alt="" width="180" height="180">';
 	document.body.appendChild(div);
 	document.body.appendChild(div2);
 	div2.addEventListener('click',function(){
@@ -1179,9 +1179,10 @@ window.addEventListener('keydown',function(e){
 			break;
 		case 37:
 			//next=1;
-			count-=2;
-			audio_play();
-			//穿越OAO();
+			if (count > 0) {
+				count-=2;
+				audio_play();
+			}
 			break;
 		case 13:
 			穿越OAO();
