@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <!--
-	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2015.03.10_   
+	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2015.12.16_   
 	   |  \/  |          |  ____|  \/  |  | |  | |__   __|  \/  | |   |  ___|  |  _ \            |_|           | |
 	   | \  / | ___   ___| |__  | \  / |  | |__| |  | |  | \  / | |   | |__    | |_) | __  ___    _  ___  ___ _| |__
 	   | |\/| |/ _ \ / _ \  __| | |\/| |  |  __  |  | |  | |\/| | |   |___ \   | ___/ V _\/ _ \  | |/ _ \/ __|_   _/
 	   | |  | | (_) |  __/ |    | |  | |  | |  | |  | |  | |  | | |___ ___) |  | |  |  / | (_) | | |  __/ |__  | |
 	   |_|  |_|\___/ \___|_|    |_|  |_|  |_|  |_|  |_|  |_|  |_|_____|____/   |_|  |_|   \___/__| |\___/\___| | |__
-	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/ V 1.1.9.1 \___/
+	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/ V 1.1.9.2 \___/
 -->
 <html>
 <head>
 <meta charset="utf-8">
 <title>MoeFM HTML5 Project (Beta)</title>
 <meta name="description" content="MoeFM HTML5 Project // 萌否电台 HTML5 版本（非官方） // Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli)">
-<link id="favicon" href="http://moefou.org/public/images/fm/favicon.ico" rel="icon " type="image/x-icon">
+<link id="favicon" href="http://moefou.org/public/images/fm/favicon.ico" rel="icon" type="image/x-icon">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <!--[if lt IE 10]>
@@ -25,10 +25,10 @@ window.location.href='http://moe.fm/listen'+window.location.search;
 <style>
 @font-face{
 	font-family:moefm-html5-icomoon;
-	src:url(moefm-html5-icomoon.ttf?_=20141106)
+	src:url(moefm-html5-icomoon.ttf?v=1.2)
 }
 article,aside,dialog,footer,header,div,footer,nav,figure,menu,main{display:block}
-[hidden="hidden"]{display:none!important}
+[hidden]{display:none!important}
 html,body{width:100%;height:100%;margin:0;padding:0;overflow:hidden;background-color:transparent;zoom:1}
 html,.cover{background-size:cover;background-position:center center;background-repeat:no-repeat no-repeat}
 html{background-attachment:fixed;transition:background 0.5s linear}
@@ -40,7 +40,7 @@ body{background:rgba(255,255,255,0.5);user-select:none;-webkit-user-select:none;
 ::selection{background:rgba(0,0,0,0.5)}
 main{width:600px;height:600px;position:absolute;left:0;right:0;top:0;bottom:0;font-size:16px;margin:auto;user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;text-shadow:0 0 1px rgba(50,50,50,0.75);display: block}
 .cover{width:400px;height:400px;background-color:rgba(50,50,50,.75);margin:10px auto;border:solid 2px #fff;box-shadow:0 0 5px #000;-webkit-transition:0.25s width linear,0.25s height linear;-o-transition:0.25s width linear,0.25s height linear;transition:0.25s width linear,0.25s height linear;margin:20px auto 10px;position:relative;overflow:hidden}
-.cover_preload,.background_preload{position:absolute}
+.cover_preload,.cover_preload2,.background_preload{position:absolute}
 .info ul{list-style:none;padding:0;margin:0;text-align:center}
 .info ul li{padding:5px 0;user-select:text;-webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;line-height:1em;overflow:hidden;height:1em;white-space:nowrap;text-overflow:ellipsis;transition:0.25s all linear}
 .title{font-size:2em}
@@ -183,7 +183,7 @@ a{color:#000}
 <body>
 <main>
 	<audio class="audio" autoplay="autoplay"></audio>
-	<div class="cover"><div class="control2"><span class="c_play" title="播放">播</span><span class="c_pause" title="暂停" hidden="hidden">停</span></div><img class="cover_preload" width="0" height="0"><div class="cover_loading_notification"></div></div>
+	<div class="cover"><div class="control2"><span class="c_play" title="播放">播</span><span class="c_pause" title="暂停" hidden="hidden">停</span></div><img class="cover_preload" width="0" height="0"><img class="cover_preload2" width="0" height="0"><div class="cover_loading_notification"></div></div>
 	<div class="info">
 		<ul>
 			<li class="title">Loading...</li>
@@ -234,6 +234,7 @@ var setting=JSON.parse(localStorage.getItem('moefm-html5-setting'))||{},
 	audio=document.getElementsByClassName('audio')[0],
 	cover=document.getElementsByClassName('cover')[0],
 	cover_preload=document.getElementsByClassName('cover_preload')[0],
+	cover_preload2=document.getElementsByClassName('cover_preload2')[0],
 	cover_loading_notification=document.getElementsByClassName('cover_loading_notification')[0],
 	title=document.getElementsByClassName('title')[0],
 	artist=document.getElementsByClassName('artist')[0],
@@ -527,89 +528,86 @@ function update_playlist(d,k,m){
 			if(/\d+/.test(d))p=1;
 		}
 		//if(m!=null&&m==true)is_update=0;
+		if (m) {
+			var url_data = 'song=' + playlist.map(function(elem){
+				return elem.sub_id;
+			}).join(',');
+			var p = 1;
+			var tmp_playlist = [];
+		}
 		playlist_fetching=1;
 		var xhr=new XMLHttpRequest();
 		xhr.onreadystatechange=function(){
 			if(xhr.readyState==4){
 				if(xhr.status==200){
 					if(JSON.parse(xhr.responseText).playlist){
-							playlist_fetching=0;
-							//count=-1;
-							if(k==false&&is_update==1){
-								//playlist=/*playlist.concat(*/JSON.parse(xhr.responseText).playlist/*)*/;
-								for(var i=0,j=JSON.parse(xhr.responseText).playlist;i<j.length;i++){playlist.push(j[i]);}
-								if(JSON.parse(xhr.responseText).info.may_have_next==true)p++;
-								else{
-									p=0;
-									url_data=null;
-								}
-								//count=-1;
-								
-							}
+						playlist_fetching=0;
+						//count=-1;
+						if(k==false&&is_update==1){
+							//playlist=/*playlist.concat(*/JSON.parse(xhr.responseText).playlist/*)*/;
+							for(var i=0,j=JSON.parse(xhr.responseText).playlist;i<j.length;i++){playlist.push(j[i]);}
+							if(JSON.parse(xhr.responseText).info.may_have_next==true)p++;
 							else{
-								playlist=JSON.parse(xhr.responseText).playlist;
-								if(JSON.parse(xhr.responseText).info.may_have_next==true)p++;
-								else{
-									p=0;
-									url_data=null;
-								}
-								//count=-1;
+								p=0;
+								url_data=null;
 							}
-							if(k!=false){
-								audio_play();
+							//count=-1;
+							
+						}
+						else{
+							playlist=JSON.parse(xhr.responseText).playlist;
+							if(JSON.parse(xhr.responseText).info.may_have_next==true)p++;
+							else{
+								p=0;
+								url_data=null;
 							}
-							/*playlist=JSON.parse(xhr.responseText).playlist;
-							playlist_fetching=0;
-							count=-1;
-							if(p!=0){
-								if(JSON.parse(xhr.responseText).info.may_have_next==true)p++;
-								else{
-									p=0;
-									url_data=null;
-								}
-							}
-							audio_play();*/
+							//count=-1;
+						}
+						if(k!=false){
+							audio_play();
+						}
 					}
 					else if(JSON.parse(xhr.responseText).response.playlist){
-							playlist_fetching=0;
+						if (m) {
+							tmp_playlist = tmp_playlist.concat(JSON.parse(xhr.responseText).response.playlist);
+							if (JSON.parse(xhr.responseText).response.information.may_have_next==true) {
+								p++;
+								url='http://moe.fm/listen/playlist?api=json&share_buttons=1&perpage=30&page='+p+'&'+url_data+'&_='+new Date().getTime();
+								xhr.open('GET',generateOauthUrl(url,options));
+								xhr.send();
+							}
+							else {
+								playlist = tmp_playlist;
+								playlist_fetching = 0;
+								update_info();
+							}
+							return;
+						}
+						playlist_fetching=0;
+						//count=-1;
+						if(k==false&&is_update==1){
+							//playlist=/*playlist.concat(*/JSON.parse(xhr.responseText).playlist/*)*/;
+							for(var i=0,j=JSON.parse(xhr.responseText).response.playlist;i<j.length;i++){playlist.push(j[i]);}
+							if(JSON.parse(xhr.responseText).response.information.may_have_next==true)p++;
+							else{
+								p=0;
+								url_data=null;
+							}
 							//count=-1;
-							/*if(p!=0){
-								playlist=JSON.parse(xhr.responseText).response.playlist;
-								count=-1;
-								if(JSON.parse(xhr.responseText).response.information.may_have_next==true)p++;
-								else{
-									p=0;
-									url_data=null;
-								}
-							}
+							
+						}
+						else{
+							playlist=JSON.parse(xhr.responseText).response.playlist;
+							if(JSON.parse(xhr.responseText).response.information.may_have_next==true)p++;
 							else{
-								playlist=JSON.parse(xhr.responseText).response.playlist;
-								count=-1;
+								p=0;
+								url_data=null;
 							}
-							audio_play();*/
-							if(k==false&&is_update==1){
-								//playlist=/*playlist.concat(*/JSON.parse(xhr.responseText).playlist/*)*/;
-								for(var i=0,j=JSON.parse(xhr.responseText).response.playlist;i<j.length;i++){playlist.push(j[i]);}
-								if(JSON.parse(xhr.responseText).response.information.may_have_next==true)p++;
-								else{
-									p=0;
-									url_data=null;
-								}
-								//count=-1;
-								
-							}
-							else{
-								playlist=JSON.parse(xhr.responseText).response.playlist;
-								if(JSON.parse(xhr.responseText).response.information.may_have_next==true)p++;
-								else{
-									p=0;
-									url_data=null;
-								}
-								//count=-1;
-							}
-							if(k!=false){
-								audio_play();
-							}
+							//count=-1;
+						}
+						if(k!=false){
+							audio_play();
+						}
 					}
 					else if(JSON.parse(xhr.responseText).response.error){
 						update_error('playlist',JSON.parse(xhr.responseText).response.error.message);
@@ -763,7 +761,7 @@ function check_login(){
 			tokenSecret:accessTokenSecret
 		};
 	xhr.onreadystatechange=function(){
-		console.log(xhr)
+		//console.log(xhr)
 		if(xhr.readyState==4){
 			if(xhr.status==200){
 				is_login=true;
@@ -791,6 +789,7 @@ function check_login(){
 				if(document.getElementsByClassName('c_like')[0].hasAttribute('hidden'))document.getElementsByClassName('c_like')[0].removeAttribute('hidden');
 				if(document.getElementsByClassName('c_dislike')[0].hasAttribute('hidden'))document.getElementsByClassName('c_dislike')[0].removeAttribute('hidden');
 				if(playlist.length==0)start();
+				else update_playlist(null, false, true);
 				/*options={
 					method:'get',
 					consumerKey: consumerKey,
@@ -1049,12 +1048,13 @@ audio.addEventListener('error',function(){
 audio.addEventListener('ended',function(){
 	is_ended=true;
 	if(next==0)update_log();
-	else next=0;
+	next=0;
 	audio_play();
 });
 cover_preload.addEventListener('load',function(){
 	cover.style.backgroundImage='url('+playlist[count].cover.large+')';
 	cover_loading_notification.style.opacity=0;
+	if (playlist[count + 1]) cover_preload2.setAttribute('src', playlist[count + 1].cover.large);
 });
 cover_preload.addEventListener('error',function(){
 	if(cover_retry<3){
@@ -1071,13 +1071,13 @@ c_play.addEventListener('click',function(){audio.play();});
 c_pause.addEventListener('click',function(){audio.pause();});
 c_previous.addEventListener('click',function(){
 	if(count>0){
-		next=1;
+		//next=1;
 		count-=2;
 		audio_play();
 	}
 });
 c_next.addEventListener('click',function(){
-	next=1;
+	//next=1;
 	audio_play();
 });
 c_like.addEventListener('click',function(){
@@ -1168,7 +1168,7 @@ window.addEventListener('keydown',function(e){
 			audio.paused==false?audio.pause():audio.play();
 			break;
 		case 39:
-			next=1;
+			//next=1;
 			audio_play();
 			break;
 		case 38:
@@ -1178,7 +1178,7 @@ window.addEventListener('keydown',function(e){
 			c_dislike.click();
 			break;
 		case 37:
-			next=1;
+			//next=1;
 			count-=2;
 			audio_play();
 			//穿越OAO();
@@ -1190,6 +1190,11 @@ window.addEventListener('keydown',function(e){
 });
 document.body.addEventListener('touchstart',function(event){
 	if(typeof event.changedTouches!='undefined'){
+		if (event.changedTouches.length > 1) {
+			touch_X = -1;
+			touch_Y = -1;
+			return;
+		}
 		var touchobj=event.changedTouches[0];
 		//event.preventDefault();
 	}
@@ -1201,6 +1206,7 @@ document.body.addEventListener('touchstart',function(event){
 });
 document.body.addEventListener('touchend',function(event){
 	if(typeof event.changedTouches!='undefined'){
+		if (event.changedTouches.length > 1 || touch_X < 0) return; 
 		var touchobj=event.changedTouches[0];
 		//event.preventDefault();
 	}
@@ -1212,17 +1218,17 @@ document.body.addEventListener('touchend',function(event){
 	var touche_X=touchf_X-touch_X;
 	var touche_Y=touchf_Y-touch_Y;
 	if(touche_X>0&&Math.abs(touche_X*10)>=document.body.clientWidth&&Math.abs(touche_X)>Math.abs(touche_Y*3)){
-		next=1;
+		//next=1;
 		audio_play();
 	}
 	else if(touche_X<0&&Math.abs(touche_X*10)>=document.body.clientWidth&&Math.abs(touche_X)>Math.abs(touche_Y*3)){
 		if(count>0){
-			next=1;
+			//next=1;
 			count-=2;
 			audio_play();
 		}
 	}
-	else if(touche_Y<0&&Math.abs(touche_Y*10)>=document.body.clientHeight&&Math.abs(touche_Y)>Math.abs(touche_X*3)){
+	/*else if(touche_Y<0&&Math.abs(touche_Y*10)>=document.body.clientHeight&&Math.abs(touche_Y)>Math.abs(touche_X*3)){
 		if(c_like.hasAttribute('meow')){
 			update_fav(1,1);
 		}
@@ -1237,7 +1243,7 @@ document.body.addEventListener('touchend',function(event){
 		else{
 			update_fav(2,0);
 		}
-	}
+	}*/
 });
 
 if(location.hash.indexOf('accessToken')>=0){
@@ -1285,7 +1291,7 @@ if(!window.localStorage.getItem('notification')){
 	div.className='notification_panel panel';
 	div2.className='notification_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
-	div.innerHTML='现在您可以尝试使用手指滑动屏幕进行操作啦~~~ >w< <br><br>手势操作说明（仅支持可触摸设备）：<br>　　1. 从左向右滑为播放下一曲；<br>　　2. 从右向左滑为播放上一曲；<br>　　3. 从下往上滑为添加/取消收藏；<br>　　4. 从上往下滑为添加/取消抛弃。';
+	div.innerHTML='现在您可以尝试使用手指滑动屏幕进行操作啦~~~ >w< <br><br>手势操作说明（仅支持可触摸设备）：<br>　　1. 从左向右滑为播放下一曲；<br>　　2. 从右向左滑为播放上一曲。';
 	document.body.appendChild(div);
 	document.body.appendChild(div2);
 	div2.addEventListener('click',function(){
@@ -1294,11 +1300,6 @@ if(!window.localStorage.getItem('notification')){
 	});
 	window.localStorage.setItem('notification','1');
 }
-
-  /////////////////////////////////////////////////////////////////
- //////     MoeFM HTML5 Project - Experimental Features     //////
-/////////////////////////////////////////////////////////////////
-/* Coming Soon...... */
 </script>
 </body>
 </html>
