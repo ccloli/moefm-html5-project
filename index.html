@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!--
-	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2015.12.16_   
+	    __  __            ______ __  __    _    _ _______ __  __ _     _____    ____  Last updated_on 2015.12.17_   
 	   |  \/  |          |  ____|  \/  |  | |  | |__   __|  \/  | |   |  ___|  |  _ \            |_|           | |
 	   | \  / | ___   ___| |__  | \  / |  | |__| |  | |  | \  / | |   | |__    | |_) | __  ___    _  ___  ___ _| |__
 	   | |\/| |/ _ \ / _ \  __| | |\/| |  |  __  |  | |  | |\/| | |   |___ \   | ___/ V _\/ _ \  | |/ _ \/ __|_   _/
 	   | |  | | (_) |  __/ |    | |  | |  | |  | |  | |  | |  | | |___ ___) |  | |  |  / | (_) | | |  __/ |__  | |
 	   |_|  |_|\___/ \___|_|    |_|  |_|  |_|  |_|  |_|  |_|  |_|_____|____/   |_|  |_|   \___/__| |\___/\___| | |__
-	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/ V 1.1.9.3 \___/
+	   Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // License: GPLv3 \___/ V 1.1.10  \___/
 -->
 <html>
 <head>
@@ -280,6 +280,9 @@ var setting=JSON.parse(localStorage.getItem('moefm-html5-setting'))||{},
 	is_ended=false,
 	touch_X,
 	touch_Y,
+	network_paused = false,
+	connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection,
+	ignore_connection = -1,
 	// Thanks to QB
 	generateOauthUrl = function (url, options) {
 		var accessor = {
@@ -321,6 +324,23 @@ var setting=JSON.parse(localStorage.getItem('moefm-html5-setting'))||{},
 }*/
 
 function audio_play(c){
+	if (ignore_connection !== 1) {
+		if (connection){
+			if (connection.type === 'cellular' || connection.type == 'wimax') {
+				if (ignore_connection === 0) return update_error('network', '用户不允许在移动网络下播放');
+				else if (ignore_connection === -1) {
+					if (confirm('您正在使用移动网络收听电台，这将可能会产生移动数据流量费用，是否继续收听？')){
+						ignore_connection = 1;
+					}
+					else {
+						update_error('network', '用户不允许在移动网络下播放');
+						return ignore_connection = 0;
+					}
+				}
+			}
+			else if (connection.type === 'none') return update_error('network', '无网络连接，请检查网络连接状态');
+		}
+	}
 	if(c==null)c=1;
 	if(count<playlist.length-1){
 		count+=c;
@@ -329,8 +349,6 @@ function audio_play(c){
 		audio.play();
 		update_info();
 		if(count>playlist.length-5&&loop==0)update_playlist(null,false);
-		//if(_check_music==true)check_file_exist(playlist[count+1].url);
-		//else if(_preload_music==true)preload_music(playlist[count+1].url);
 	}
 	else if(loop==1){
 		count=0;
@@ -410,7 +428,7 @@ function update_error(t,c){
 			context='获取下载数据失败<br>'+c;
 			break;
 		default:
-			context='Seems that something lovely goes wrong...<br>'+c;
+			context=c;
 	}
 	div.innerHTML=context;
 	document.body.appendChild(div);
@@ -657,6 +675,7 @@ function update_volume_icon(v){
 }
 function update_background(){
 	if(background_list.length==0){
+		var preurl = '/background/';
 		var xhr=new XMLHttpRequest();
 		xhr.onreadystatechange=function(){
 			if(xhr.readyState==4){
@@ -664,12 +683,17 @@ function update_background(){
 					background_list=JSON.parse(xhr.responseText).background_list;
 					update_background();
 				}
+				else if (preurl === '/background/') {
+					preurl = 'http://moefm.ccloli.com/background/';
+					xhr.open('GET', preurl);
+					xhr.send();
+				}
 				else{
 					update_error('background','获取背景图片列表失败<br>XHR Ready State: '+xhr.readyState+'<br>XHR Status: '+xhr.statusText);
 				}
 			}
 		}
-		xhr.open('GET','/background/');
+		xhr.open('GET', preurl);
 		xhr.send();
 	}
 	else{
@@ -740,7 +764,7 @@ function download(){
 	xhr.send();
 }
 function set_login(){
-	link_right_user.innerHTML='<a class="right" target="_blank" href="http://moefou.org/register?redirect=http%3A%2F%2Fmoefm.ccloli.com">注册</a><a class="right">登入</a>';
+	link_right_user.innerHTML='<a class="right" target="_blank" href="http://moefou.org/register?redirect=' + encodeURIComponent(location.href) + '">注册</a><a class="right">登入</a>';
 	document.getElementsByTagName('aside')[0].setAttribute('hidden','hidden');
 	document.getElementsByClassName('c_like')[0].setAttribute('hidden','hidden');
 	document.getElementsByClassName('c_dislike')[0].setAttribute('hidden','hidden');
@@ -775,34 +799,11 @@ function check_login(){
 				user_pan.innerHTML='<div style="padding:6px"><div style="float:left;width:48px;height:48px"><img class="avatar" style="width:48px;height:48px" src="'+data.user_avatar.small+'" alt=""></div><div style="padding-left:6px;margin-left:48px;width:108px"><a title="个人主页" href="'+data.user_fm_url+'" target="_blank">我的主页</a><a target="_blank" class="external" href="http://moefou.org/user/setting">个人设定</a><a onclick="logout()">登出</a><div style="clear:both"></div></div><div style="clear:both"></div></div>';
 				/*user_pan.setAttribute('hidden','hidden');*/
 				user_btn.appendChild(user_pan);
-				/*user_btn.addEventListener('mouseover',function(){
-					user_pan.removeAttribute('hidden');
-					user_pan.style.opacity=1;
-					user_pan.style.bottom='20px';
-				})
-				user_btn.addEventListener('mouseout',function(){
-					user_pan.setAttribute('hidden','hidden');
-					user_pan.style.opacity=0;
-					user_pan.style.bottom='0px';
-				})*/
 				if(document.getElementsByTagName('aside')[0].hasAttribute('hidden'))document.getElementsByTagName('aside')[0].removeAttribute('hidden');
 				if(document.getElementsByClassName('c_like')[0].hasAttribute('hidden'))document.getElementsByClassName('c_like')[0].removeAttribute('hidden');
 				if(document.getElementsByClassName('c_dislike')[0].hasAttribute('hidden'))document.getElementsByClassName('c_dislike')[0].removeAttribute('hidden');
 				if(playlist.length==0)start();
 				else update_playlist(null, false, true);
-				/*options={
-					method:'get',
-					consumerKey: consumerKey,
-					consumerSecret: consumerSecret,
-					token:accessToken,
-					tokenSecret:accessTokenSecret
-				}*/
-				/*if(playlist.length!=0){
-					for(var i=0;i<playlist.length;i++){
-
-					}*/
-				//update_playlist(null,false,true)
-				//}
 			}
 			else if(xhr.status==401){
 				update_error('login','用户信息验证失败，可能是因为您曾经取消授权，请尝试重新授权登录。');
@@ -949,7 +950,7 @@ function about(){
 	div.className='about_panel panel';
 	div2.className='about_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
-	div.innerHTML='<strong>MoeFM HTML5 Project (Beta)</strong><br>萌否电台 HTML5 版本（非官方）<br>作者：<a href="http://moefou.org/home/864907600cc" target="_blank">864907600cc</a><br>致谢：<a href="http://blog.likelikeslike.com/" target="_blank">Jak Wings</a>（提供萌否 OAuth 认证 example）、<a href="http://moefou.org/home/zanko" target="_blank">zanko</a>（提供 API 使用支持）<br>桌面设备测试：Chrome 32/33 (Windows 7 64-bit/Ubuntu 13.10 64-bit)、Firefox 25 (Windows 7 64-bit)、Internet Explorer (Windows 7 64-bit)<br>移动设备测试：Android 自带浏览器（Android 4.1/4.3）、UC 浏览器（Android 2.2/4.3，不完全支持）、海豚浏览器（Android 4.3）<br>Powered by <a href="http://moe.fm" target="_blank">Moe.FM</a> | <a href="http://moefm.ccloli.com">Homepage</a><br><p><a href="http://moefou.org/group/moefm_html5_project" target="_blank">项目小组</a> <a href="http://moefou.org/topic/1730" target="_blank">Bug 反馈</a></p>';
+	div.innerHTML='<strong>MoeFM HTML5 Project (Beta)</strong><br>萌否电台 HTML5 版本（非官方）<br>作者：<a href="http://moefou.org/home/864907600cc" target="_blank">864907600cc</a><br>致谢：<a href="http://blog.likelikeslike.com/" target="_blank">Jak Wings</a>（提供萌否 OAuth 认证 example）、<a href="http://moefou.org/home/zanko" target="_blank">zanko</a>（提供 API 使用支持）<br>桌面设备测试：Chrome 32/33 (Windows 7 64-bit/Ubuntu 13.10 64-bit)、Firefox 25 (Windows 7 64-bit)、Internet Explorer (Windows 7 64-bit)<br>移动设备测试：Android 自带浏览器（Android 4.1/4.3）、UC 浏览器（Android 2.2/4.3，不完全支持）、海豚浏览器（Android 4.3）<br>Powered by <a href="http://moe.fm" target="_blank">Moe.FM</a> | <a href="http://moefm.ccloli.com">Homepage</a> | <a href="https://github.com/ccloli/moefm-html5-project">GitHub</a><br><p><a href="http://moefou.org/group/moefm_html5_project" target="_blank">项目小组</a> <a href="http://moefou.org/topic/1730" target="_blank">Bug 反馈</a></p>';
 	document.body.appendChild(div);
 	document.body.appendChild(div2);
 	div2.addEventListener('click',function(){
@@ -965,7 +966,20 @@ function 穿越OAO(){
 	div.className='穿越_panel panel';
 	div2.className='穿越_panel_background panel_background';
 	div2.title='点击黑色区域以退出';
-	div.innerHTML='扫描二维码，在移动设备上继续收听，无需重新登录<br><img src="/qr.php?data='+encodeURIComponent(location.origin + '/?song='+playlist[count].sub_id+'#'+(accessToken!=null?('accessToken='+accessToken+',accessTokenSecret='+accessTokenSecret)+',':'')+'currentTime='+audio.currentTime)+'" alt="" width="180" height="180">';
+	var qr_path = '/qr.php';
+	var dest_path = location.origin + location.pathname + '/?song='+playlist[count].sub_id+'#'+(accessToken!=null?('accessToken='+accessToken+',accessTokenSecret='+accessTokenSecret)+',':'')+'currentTime='+audio.currentTime;
+	div.innerHTML='扫描二维码，在移动设备上继续收听，无需重新登录<br><img src="' + qr_path + '?data='+encodeURIComponent(dest_path)+'" alt="" width="180" height="180">';
+	div.getElementsByTagName('img')[0].onerror = function(){
+		if (qr_path === '/qr.php') {
+			qr_path = 'http://moefm.ccloli.com/qr.php';
+			this.setAttribute('src', qr_path + '?data=' + encodeURIComponent(dest_path));
+		}
+		else {
+			var node = document.createElement('div');
+			node.innerHTML = '载入二维码失败，请将以下 URL 用其他方式发送到移动设备<br><input type="text" value="' + dest_path + '">';
+			div.replaceChild(node, this);
+		}
+	}
 	document.body.appendChild(div);
 	document.body.appendChild(div2);
 	div2.addEventListener('click',function(){
@@ -1047,6 +1061,7 @@ audio.addEventListener('error',function(){
 });
 audio.addEventListener('ended',function(){
 	is_ended=true;
+	if (!navigator.onLine) return network_paused = true;
 	if(next==0)update_log();
 	next=0;
 	audio_play();
@@ -1067,7 +1082,26 @@ cover_preload.addEventListener('error',function(){
 		cover_retry=0;
 	}
 });
-c_play.addEventListener('click',function(){audio.play();});
+c_play.addEventListener('click',function(){
+	if (ignore_connection !== 1) {
+		if (connection){
+			if (connection.type === 'cellular' || connection.type == 'wimax') {
+				if (ignore_connection === 0) return update_error('network', '用户不允许在移动网络下播放');
+				else if (ignore_connection === -1) {
+					if (confirm('您正在使用移动网络收听电台，这将可能会产生移动数据流量费用，是否继续收听？')){
+						ignore_connection = 1;
+					}
+					else {
+						update_error('network', '用户不允许在移动网络下播放');
+						ignore_connection = 0;
+					}
+				}
+			}
+			else if (connection.type === 'none' && (audio.buffered.end(audio.buffered.length-1).toFixed(2))/(audio.duration.toFixed(2)) < 1) return update_error('network', '无网络连接，请检查网络连接状态');
+		}
+	}
+	audio.play();
+});
 c_pause.addEventListener('click',function(){audio.pause();});
 c_previous.addEventListener('click',function(){
 	if(count>0){
@@ -1246,6 +1280,36 @@ document.body.addEventListener('touchend',function(event){
 		}
 	}*/
 });
+document.body.onoffline = function () {
+	update_error('network', '网络状态异常，请检查网络连接');
+	network_paused = true;
+};
+document.body.ononline = function () {
+	update_error('network', '网络已恢复连接');
+	if (network_paused) {
+		update_log();
+		next=0;
+		audio_play();
+		network_paused = false;
+	}
+};
+if (connection) {
+	connection.addEventListener('typechange', function(){
+		if (connection.type === 'cellular' || connection.type == 'wimax') {
+			if (ignore_connection === 0) return update_error('network', '用户不允许在移动网络下播放');
+			else if (ignore_connection === -1) {
+				if (confirm('您正在使用移动网络收听电台，这将可能会产生移动数据流量费用，是否继续收听？')){
+					ignore_connection = 1;
+				}
+				else {
+					return ignore_connection = 0;
+				}
+			}
+		}
+		else if (connection.type === 'none') return update_error('network', '无网络连接，请检查网络连接状态');
+		else if (ignore_connection === 1 && audio.paused) audio_play();
+	});
+}
 
 if(location.hash.indexOf('accessToken')>=0){
 	localStorage.setItem('accessToken',location.hash.match(/accessToken=([0-9a-f]{41})/)[1]);
