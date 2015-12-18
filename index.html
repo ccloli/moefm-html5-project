@@ -12,11 +12,11 @@
 <head>
 <meta charset="utf-8">
 <title>MoeFM HTML5 Project (Beta)</title>
-<meta name="description" content="MoeFM HTML5 Project // 萌否电台 HTML5 版本（非官方） // Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli)">
+<meta name="description" content="MoeFM HTML5 Project // 萌否电台 HTML5 版本（非官方） // Just a Net Radio based on Moefou Open API // (c) 864907600cc (ccloli) // github.com/ccloli/moefm-html5-project">
 <link id="favicon" href="http://moefou.org/public/images/fm/favicon.ico" rel="icon" type="image/x-icon">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<!--[if lt IE 10]>
+<!--[if lte IE 9]>
 <script>
 alert('很抱歉，看起来您的浏览器版本过老了……\n请使用 IE 10 及以上版本，建议使用 IE 11');
 window.location.href='http://moe.fm/listen'+window.location.search;
@@ -457,8 +457,9 @@ function update_log(){
 		xhr.onreadystatechange=function(){
 			if(xhr.readyState==4){
 				if(xhr.status==200){
-					if(JSON.parse(xhr.responseText).status==false){
-						update_error('log',JSON.parse(xhr.responseText).msg);
+					var data = JSON.parse(xhr.responseText);
+					if(data.status==false){
+						update_error('log',data.msg);
 					}
 				}
 				else if(xhr.responseText){
@@ -558,13 +559,14 @@ function update_playlist(d,k,m){
 		xhr.onreadystatechange=function(){
 			if(xhr.readyState==4){
 				if(xhr.status==200){
-					if(JSON.parse(xhr.responseText).playlist){
+					var data = JSON.parse(xhr.responseText);
+					if(data.playlist){
 						playlist_fetching=0;
 						//count=-1;
 						if(k==false&&is_update==1){
 							//playlist=/*playlist.concat(*/JSON.parse(xhr.responseText).playlist/*)*/;
-							for(var i=0,j=JSON.parse(xhr.responseText).playlist;i<j.length;i++){playlist.push(j[i]);}
-							if(JSON.parse(xhr.responseText).info.may_have_next==true)p++;
+							for(var i=0,j=data.playlist;i<j.length;i++){playlist.push(j[i]);}
+							if(data.info.may_have_next==true)p++;
 							else{
 								p=0;
 								url_data=null;
@@ -573,8 +575,8 @@ function update_playlist(d,k,m){
 							
 						}
 						else{
-							playlist=JSON.parse(xhr.responseText).playlist;
-							if(JSON.parse(xhr.responseText).info.may_have_next==true)p++;
+							playlist=data.playlist;
+							if(data.info.may_have_next==true)p++;
 							else{
 								p=0;
 								url_data=null;
@@ -585,10 +587,10 @@ function update_playlist(d,k,m){
 							audio_play();
 						}
 					}
-					else if(JSON.parse(xhr.responseText).response.playlist){
+					else if(data.response.playlist){
 						if (m) {
-							tmp_playlist = tmp_playlist.concat(JSON.parse(xhr.responseText).response.playlist);
-							if (JSON.parse(xhr.responseText).response.information.may_have_next==true) {
+							tmp_playlist = tmp_playlist.concat(data.response.playlist);
+							if (data.response.information.may_have_next==true) {
 								p++;
 								url='http://moe.fm/listen/playlist?api=json&share_buttons=1&perpage=30&page='+p+'&'+url_data+'&_='+new Date().getTime();
 								xhr.open('GET',generateOauthUrl(url,options));
@@ -605,8 +607,8 @@ function update_playlist(d,k,m){
 						//count=-1;
 						if(k==false&&is_update==1){
 							//playlist=/*playlist.concat(*/JSON.parse(xhr.responseText).playlist/*)*/;
-							for(var i=0,j=JSON.parse(xhr.responseText).response.playlist;i<j.length;i++){playlist.push(j[i]);}
-							if(JSON.parse(xhr.responseText).response.information.may_have_next==true)p++;
+							for(var i=0,j=data.response.playlist;i<j.length;i++){playlist.push(j[i]);}
+							if(data.response.information.may_have_next==true || url_data.indexOf('fav=') < 0)p++;
 							else{
 								p=0;
 								url_data=null;
@@ -615,8 +617,8 @@ function update_playlist(d,k,m){
 							
 						}
 						else{
-							playlist=JSON.parse(xhr.responseText).response.playlist;
-							if(JSON.parse(xhr.responseText).response.information.may_have_next==true)p++;
+							playlist=data.response.playlist;
+							if(data.response.information.may_have_next==true || url_data.indexOf('fav=') < 0)p++;
 							else{
 								p=0;
 								url_data=null;
@@ -627,8 +629,8 @@ function update_playlist(d,k,m){
 							audio_play();
 						}
 					}
-					else if(JSON.parse(xhr.responseText).response.error){
-						update_error('playlist',JSON.parse(xhr.responseText).response.error.message);
+					else if(data.response.error){
+						update_error('playlist',data.response.error.message);
 					}
 				}
 				else if(xhr.status==401){

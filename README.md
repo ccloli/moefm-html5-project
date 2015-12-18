@@ -7,6 +7,9 @@ moefm-html5-project
 
 许可协议附注
 -------------------
+
+This project is under license of GPLv3.
+
 ### oauth.js
 
 Source: http://oauth.googlecode.com/svn/code/javascript/oauth.js
